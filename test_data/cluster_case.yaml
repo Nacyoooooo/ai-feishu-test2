@@ -1,0 +1,20 @@
+create_cluster:
+  - cluster_name: "abc"
+    vpc_id: "xyz"
+    code: 200
+
+  - cluster_name: ""
+    vpc_id: "xyz"
+    code: 1001
+
+  - cluster_name: "abc"
+    vpc_id: ""
+    code: 1002
+
+
+rename_cluster:
+  - cluster_name: "abc"
+    code: 200
+
+  - cluster_name: ""
+    code: 1003

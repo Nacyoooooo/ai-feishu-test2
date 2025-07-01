@@ -2,21 +2,22 @@ import requests
 from requests.exceptions import RequestException
 
 class APIClient:
-    def __init__(self, base_url):
-        self.base_url = base_url
+    def __init__(self):
+        self.base_url = "https://api.feishu.cn" # todo 读配置
         self.session = requests.Session()
         self.session.headers.update({
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization': 'xxx' # todo 读配置
         })
 
     def _request(self, method, endpoint, **kwargs):
         """Base request method with error handling"""
-        url = f"{self.base_url}/{endpoint.lstrip('/')}"
+        url = self.base_url + endpoint
         try:
             response = self.session.request(method, url, **kwargs)
             response.raise_for_status()
-            return response
+            return response.json()
         except RequestException as e:
             print(f"Request failed: {str(e)}")
             raise
