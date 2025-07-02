@@ -3,7 +3,7 @@ from requests.exceptions import RequestException
 
 class APIClient:
     def __init__(self):
-        self.base_url = "https://api.feishu.cn" # todo 读配置
+        self.base_url = "https://open.feishu.cn/open-apis" # todo 读配置
         self.session = requests.Session()
         self.session.headers.update({
             'Content-Type': 'application/json',

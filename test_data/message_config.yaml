@@ -1,0 +1,7 @@
+access_token: "t-g10472eoYNVYZFYQXBH5WHKVMBP77MNIAWEIV22Y"
+receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
+test_messages:
+  - content: {"text": "测试消息1"}
+    expected_code: 0
+  - content: {"text": "Hello World2"}
+    expected_code: 0
