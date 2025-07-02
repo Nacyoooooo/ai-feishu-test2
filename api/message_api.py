@@ -1,33 +1,27 @@
 from api.base_api import APIClient
 import json
 
+
 class SendMessageAPI(APIClient):
-    def __init__(self, token: str):
+    def __init__(self):
         super().__init__()
-        self.token = token
-    
-    def send_message(self, receive_id, content, msg_type="text", uuid=None, receive_id_type="open_id"):
+
+    def send_message(self, receive_id, content, receive_id_type, msg_type="text", uuid=None):
         """发送飞书消息
-        
         Args:
             receive_id: 接收者ID
             content: 消息内容字典，如{"text":"消息文本"}
             msg_type: 消息类型，默认为text
             uuid: 消息唯一标识，选填
             receive_id_type: 接收者ID类型，可选值: user_id, open_id, union_id, email, chat_id
-        
         Returns:
             响应结果
         """
         endpoint = f"/im/v1/messages?receive_id_type={receive_id_type}"
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {self.token}"
-        }
         data = {
             "content": json.dumps(content),
             "msg_type": msg_type,
             "receive_id": receive_id,
             "uuid": uuid
         }
-        return self._request("POST", endpoint, headers=headers, json=data)
+        return self.post(endpoint, data)

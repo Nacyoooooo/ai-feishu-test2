@@ -3,12 +3,12 @@ from requests.exceptions import RequestException
 
 class APIClient:
     def __init__(self):
-        self.base_url = "https://open.feishu.cn/open-apis" # todo 读配置
+        self.base_url = "https://open.feishu.cn/open-apis"
         self.session = requests.Session()
         self.session.headers.update({
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': 'xxx' # todo 读配置
+            'Authorization': 'Bearer t-g10472i07FSSPTIYJJZ2R63YWK5XZLC5VP7W5PCA' # todo 读配置
         })
 
     def _request(self, method, endpoint, **kwargs):

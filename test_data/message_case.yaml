@@ -1,0 +1,9 @@
+send_message:
+  - content: {"text": ""}
+    expected_code: 230001
+    receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
+    receive_id_type: "open_id"
+  - content: {"text": "Hello World2"}
+    expected_code: 0
+    receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
+    receive_id_type: "open_id"
