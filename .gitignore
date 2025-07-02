@@ -1,2 +1,17 @@
 .idea
 .vscode
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.env.local
+report.htm
+.pytest_cache/
+.coverage
+htmlcov/
+logs/
+api.log
+*.swp
+*.swo
+*~
+assets/
