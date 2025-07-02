@@ -14,13 +14,8 @@ class APIClient:
     def _request(self, method, endpoint, **kwargs):
         """Base request method with error handling"""
         url = self.base_url + endpoint
-        try:
-            response = self.session.request(method, url, **kwargs)
-            response.raise_for_status()
-            return response.json()
-        except RequestException as e:
-            print(f"Request failed: {str(e)}")
-            raise
+        response = self.session.request(method, url, **kwargs)
+        return response.json()
 
     def get(self, endpoint, params=None):
         """Send GET request"""

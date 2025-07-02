@@ -2,9 +2,10 @@ from api.base_api import APIClient
 import json
 
 class SendMessageAPI(APIClient):
-    def __init__(self, base_url=None):
-        super().__init__()  # 移除base_url参数，修复父类构造函数参数不匹配问题
-        
+    def __init__(self, token: str):
+        super().__init__()
+        self.token = token
+    
     def send_message(self, receive_id, content, msg_type="text", uuid=None, receive_id_type="open_id"):
         """发送飞书消息
         
@@ -18,11 +19,6 @@ class SendMessageAPI(APIClient):
         Returns:
             响应结果
         """
-        # 验证receive_id_type是否合法
-        valid_types = {'user_id', 'open_id', 'union_id', 'email', 'chat_id'}
-        if receive_id_type not in valid_types:
-            raise ValueError(f"receive_id_type必须是以下之一: {', '.join(valid_types)}")
-        
         endpoint = f"/im/v1/messages?receive_id_type={receive_id_type}"
         headers = {
             "Content-Type": "application/json",
