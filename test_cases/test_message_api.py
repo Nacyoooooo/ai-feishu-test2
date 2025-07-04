@@ -2,7 +2,7 @@ import logging
 
 import pytest
 
-from api.message_api import SendMessageAPI
+from api.message.send_message_api import SendMessageAPI
 from test_data import read_data_from_yaml
 
 logging.basicConfig(
@@ -21,8 +21,8 @@ class TestSendMessage:
         "send_message"
     ))
     def test_send_message(self, send_message_data):
-        message_api = SendMessageAPI()
         """测试发送消息API，增加详细日志和错误处理"""
+        message_api = SendMessageAPI()
         receive_id = send_message_data['receive_id']
         receive_type = send_message_data['receive_id_type']
 

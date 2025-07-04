@@ -2,3 +2,16 @@ pytest
 requests
 python-dotenv
 pyyaml
+langchain
+openai
+tavily-python
+beautifulsoup4
+playwright
+tools
+langchain_community
+langchain-openai
+langchain-core
+fastapi
+uvicorn
+sse-starlette
+pydantic
