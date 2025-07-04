@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import uuid
 from typing import AsyncGenerator
@@ -12,6 +13,16 @@ from langchain.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 from pydantic import BaseModel
 from sse_starlette.sse import EventSourceResponse
+
+# 配置日志
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
 
 os.environ['OPENAI_API_KEY'] = 'sk-9ef6e0e5b0db4da580331750f5de8997'
 os.environ['LANGCHAIN_TRACING_V2'] = 'true'
@@ -125,10 +136,11 @@ async def generate_code_stream(json_data: str, template: str = None) -> AsyncGen
             if chunk.content:
                 # EventSourceResponse会自动添加data:前缀和\n\n
                 yield chunk.content
-        
+
         # 发送结束标记
         yield "[DONE]"
     except Exception as e:
+        logger.error(f"生成代码时发生错误: {str(e)}")
         yield f"生成代码时发生错误: {str(e)}"
         yield "[DONE]"
 
@@ -166,6 +178,7 @@ async def generate_code_stream_endpoint(request: CodeGenerationRequest):
             new_request_url = transform_url(request.url)
             json_data = await fetch_json_data(new_request_url)
             json_str = json.dumps(json_data, ensure_ascii=False)
+            logger.info(f"飞书API文档json数据：{json_str}")
         elif request.json_data:
             json_str = request.json_data
         else:
@@ -173,6 +186,7 @@ async def generate_code_stream_endpoint(request: CodeGenerationRequest):
         
         # 生成任务ID
         task_id = str(uuid.uuid4())
+        logger.info(f"创建新任务: {task_id}")
         
         # 存储任务信息
         generation_tasks[task_id] = {
@@ -181,6 +195,7 @@ async def generate_code_stream_endpoint(request: CodeGenerationRequest):
             'status': 'pending'
         }
         
+        logger.info(f"任务 {task_id} 已创建，状态: pending")
         return {"task_id": task_id, "status": "started"}
     
     except Exception as e:
@@ -189,24 +204,31 @@ async def generate_code_stream_endpoint(request: CodeGenerationRequest):
 @app.get("/generate-code-stream")
 async def generate_code_stream_endpoint_get(task_id: str = None):
     """EventSource流式接口"""
+    logger.info(f"收到EventSource连接请求，任务ID: {task_id}")
+    
     if not task_id or task_id not in generation_tasks:
+        logger.error(f"无效的任务ID: {task_id}")
         raise HTTPException(status_code=400, detail="无效的任务ID")
     
     task = generation_tasks[task_id]
     task['status'] = 'running'
+    logger.info(f"任务 {task_id} 状态更新为: running")
     
     try:
+        logger.info(f"开始为任务 {task_id} 生成流式响应")
         return EventSourceResponse(
             generate_code_stream(task['json_data'], task['template']),
             media_type="text/event-stream"
         )
     except Exception as e:
         task['status'] = 'error'
+        logger.error(f"任务 {task_id} 发生错误: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         # 清理任务
         if task_id in generation_tasks:
             del generation_tasks[task_id]
+            logger.info(f"任务 {task_id} 已清理")
 
 @app.get("/health")
 async def health_check():
