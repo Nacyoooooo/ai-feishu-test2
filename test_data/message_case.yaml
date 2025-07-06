@@ -1,9 +1,73 @@
+robot:
+  app_id: "cli_a8ee0c6a92e7501c"
+  app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+
+
 send_message:
   - content: {"text": ""}
     expected_code: 230001
     receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
     receive_id_type: "open_id"
+    app_id: "cli_a8ee0c6a92e7501c"
+    app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
   - content: {"text": "Hello World2"}
     expected_code: 0
     receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
     receive_id_type: "open_id"
+    app_id: "cli_a8ee0c6a92e7501c"
+    app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+
+
+list_message:
+  # 成功用例
+  - container_id: "oc_a9bc91faf86be9ea96d20e16e12fd57e"
+    container_id_type: "chat"
+    # start_time: "1608594809"
+    # end_time: "1609296809"
+    # sort_type: "ByCreateTimeAsc"
+    # page_size: 20
+    expected_code: 0
+    app_id: "cli_a8ee0c6a92e7501c"
+    app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+  
+  # 参数错误用例
+  - container_id: "oc_234jsi43d3ssi993d43545f"
+    container_id_type: "chat"
+    expected_code: 230001
+    app_id: "cli_a8ee0c6a92e7501c"
+    app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+  
+  # 机器人不在群组中
+  - container_id: "oc_47f21b6a03a39c0621ac2db348ea9d6f"
+    container_id_type: "chat"
+    expected_code: 230002
+    app_id: "cli_a8ee0c6a92e7501c"
+    app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+  
+  # 未启用机器人能力
+  - container_id: "oc_a9bc91faf86be9ea96d20e16e12fd57e"
+    container_id_type: "chat"
+    expected_code: 230006
+    app_id: "cli_a8e0f325fae5100d"
+    app_secret: "kB0DWoplOTY0lkODgs7ICbPS1VdIYMCY"
+  
+  # 权限不足
+  - container_id: "oc_a9bc91faf86be9ea96d20e16e12fd57e"
+    container_id_type: "chat"
+    expected_code: 230027
+    app_id: "cli_a8e0f7e7cbfb1013"
+    app_secret: "0TGhLpe3L1wq1OGfnqwTddGH1IOEhxsH"
+  
+  # 话题不可见
+  - container_id: "omt_d4be107c616a"
+    container_id_type: "thread"
+    expected_code: 230073
+    app_id: "cli_xxxxxx"
+    app_secret: "xxxxxx"
+  
+  # 消息已删除
+  - container_id: "oc_234jsi43d3ssi993d43545f"
+    container_id_type: "chat"
+    expected_code: 230110
+    app_id: "cli_xxxxxx"
+    app_secret: "xxxxxx"

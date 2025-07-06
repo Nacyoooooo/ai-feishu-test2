@@ -3,7 +3,8 @@ import json
 
 
 class SendMessageAPI(APIClient):
-    def __init__(self):
+    def __init__(self, access_token):
+        self.access_token = access_token
         super().__init__()
 
     def send_message(self, receive_id, content, receive_id_type, msg_type="text", uuid=None):
@@ -17,7 +18,7 @@ class SendMessageAPI(APIClient):
         Returns:
             响应结果
         """
-        endpoint = f"/im/v1/messages?receive_id_type={receive_id_type}"
+        endpoint = f"/open-apis/im/v1/messages?receive_id_type={receive_id_type}"
         data = {
             "content": json.dumps(content),
             "msg_type": msg_type,

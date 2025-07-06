@@ -52,12 +52,20 @@ class CodeGenerationRequest(BaseModel):
     template: str = None
 
 DEFAULT_TEMPLATE = """
+根据下面的描述来构造测试数据
+{json_data}
 根据下面的json数据的$.schema.apiSchema.responses，检索出以下内容：请求路径、请求参数、请求体、响应体以及响应体中的不同code，帮我生成代码，json数据如下：
 
 {json_data}
 
 代码规范和示例如下，请严格遵守，并确保覆盖所有的错误码，如果有不能够覆盖的错误码，请在生成完代码后告知我这些错误码以及对应的场景，示例代码中调用的函数默认已被实现，不要有多余的代码：
 API接口：
+# send_message_api.py
+from api.base_api import APIClient
+import json
+
+
+class SendMessageAPI(APIClient):
     def send_message(self, receive_id, content, receive_id_type, msg_type="text", uuid=None):
     \"\"\"发送飞书消息
     Args:
@@ -84,8 +92,11 @@ API接口：
         "send_message"
     ))
     def test_send_message(self, send_message_data):
+        from api.message.send_message_api import SendMessageAPI
+        from common.robot_common import get_app_access_token
+        token=get_app_access_token(send_message_data['app_id'], send_message_data['app_secret'])['app_access_token']
         \"\"\"测试发送消息API，增加详细日志和错误处理\"\"\"
-        message_api = SendMessageAPI()
+        message_api = SendMessageAPI(access_token=token)
         receive_id = send_message_data['receive_id']
         receive_type = send_message_data['receive_id_type']
 
