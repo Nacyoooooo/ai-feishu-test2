@@ -15,7 +15,7 @@ api.log
 *.swo
 *~
 assets/
-*.html
+# *.html
 *.out
 *.log
 *.logs
