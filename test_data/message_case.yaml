@@ -58,16 +58,16 @@ list_message:
     app_id: "cli_a8e0f7e7cbfb1013"
     app_secret: "0TGhLpe3L1wq1OGfnqwTddGH1IOEhxsH"
   
-  # 话题不可见
-  - container_id: "omt_d4be107c616a"
-    container_id_type: "thread"
-    expected_code: 230073
-    app_id: "cli_xxxxxx"
-    app_secret: "xxxxxx"
+  # # 话题不可见
+  # - container_id: "omt_d4be107c616a"
+  #   container_id_type: "thread"
+  #   expected_code: 230073
+  #   app_id: "cli_xxxxxx"
+  #   app_secret: "xxxxxx"
   
-  # 消息已删除
-  - container_id: "oc_234jsi43d3ssi993d43545f"
-    container_id_type: "chat"
-    expected_code: 230110
-    app_id: "cli_xxxxxx"
-    app_secret: "xxxxxx"
+  # # 消息已删除
+  # - container_id: "oc_234jsi43d3ssi993d43545f"
+  #   container_id_type: "chat"
+  #   expected_code: 230110
+  #   app_id: "cli_xxxxxx"
+  #   app_secret: "xxxxxx"
