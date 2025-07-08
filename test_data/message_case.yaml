@@ -4,18 +4,102 @@ robot:
 
 
 send_message:
-  - content: {"text": ""}
-    expected_code: 230001
-    receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
-    receive_id_type: "open_id"
-    app_id: "cli_a8ee0c6a92e7501c"
-    app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
-  - content: {"text": "Hello World2"}
-    expected_code: 0
-    receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
-    receive_id_type: "open_id"
-    app_id: "cli_a8ee0c6a92e7501c"
-    app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+    - app_id: "cli_a8ee0c6a92e7501c"
+      app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+      content: {"text": "test content"}
+      expected_code: 0
+      receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
+      receive_id_type: "open_id"
+      desc: "正常情况"
+
+    - app_id: "cli_a8ee0c6a92e7501c"
+      app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+      content: {"text": ""}
+      expected_code: 230001
+      receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
+      receive_id_type: "open_id"
+      desc: "参数错误"
+
+    - app_id: "cli_a8e0f7e7cbfb1013"
+      app_secret: "0TGhLpe3L1wq1OGfnqwTddGH1IOEhxsH"
+      content: {"text": "test content"}
+      expected_code: 230027
+      receive_id: "oc_a9bc91faf86be9ea96d20e16e12fd57e"
+      receive_id_type: "chat_id"
+      desc: "机器人缺权限"
+
+    - app_id: "cli_a8e0f325fae5100d"
+      app_secret: "kB0DWoplOTY0lkODgs7ICbPS1VdIYMCY"
+      content: {"text": "test content"}
+      expected_code: 230006
+      receive_id: "oc_a9bc91faf86be9ea96d20e16e12fd57e"
+      receive_id_type: "chat_id"
+      desc: "机器人无场景能力"
+
+    - app_id: "cli_a8ee0c6a92e7501c"
+      app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+      content: {"text": "test content"}
+      expected_code: 230002
+      receive_id: "oc_47f21b6a03a39c0621ac2db348ea9d6f"
+      receive_id_type: "chat_id"
+      desc: "机器人不在群组中"
+
+    - app_id: "cli_a8ee0c6a92e7501c"
+      app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+      content: {"text": "test content"}
+      expected_code: 232009
+      receive_id: "oc_785e4cabaf98a1537830b0cac6ba77d2"
+      receive_id_type: "chat_id"
+      desc: "群组已解散"
+
+    - app_id: "cli_a8ee0c6a92e7501c"
+      app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+      content: {"text": "test content"}
+      expected_code: 230013
+      receive_id: "ou_530eb3559e88330989945fa8114edc88"
+      receive_id_type: "open_id"
+      desc: "用户已离职"
+
+    - app_id: "cli_a8ee0c6a92e7501c"
+      app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+      content: {"text": "test content"}
+      expected_code: 230053
+      receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
+      receive_id_type: "open_id"
+      desc: "用户屏蔽机器人"
+
+    - app_id: "cli_a8ee0c6a92e7501c"
+      app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+      content: {"text": "test content"}
+      expected_code: 230022
+      receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
+      receive_id_type: "open_id"
+      desc: "消息内容敏感"
+
+    - app_id: "cli_a8ee0c6a92e7501c"
+      app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+      content: {"text": "test content"}
+      expected_code: 230028
+      receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
+      receive_id_type: "open_id"
+      desc: "消息审查未通过"
+
+    - app_id: "cli_a8ee0c6a92e7501c"
+      app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+      content: {"text": "test content"}
+      expected_code: 230034
+      receive_id: "invalid_id"
+      receive_id_type: "open_id"
+      desc: "无效接收者ID"
+
+    - app_id: "cli_a8ee0c6a92e7501c"
+      app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+      content: {"text": "test content"}
+      expected_code: 230055
+      receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
+      receive_id_type: "open_id"
+      msg_type: "media"
+      desc: "消息类型不匹配"
 
 
 list_message:

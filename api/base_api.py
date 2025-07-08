@@ -9,7 +9,7 @@ class APIClient:
         self.session.headers.update({
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': f'Bearer {self.access_token}' # todo 读配置
+            'Authorization': f'Bearer {self.access_token}'
         })
 
     def _request(self, method, endpoint, **kwargs):

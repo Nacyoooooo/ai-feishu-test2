@@ -14,14 +14,6 @@ from langchain_openai import ChatOpenAI
 from pydantic import BaseModel
 from sse_starlette.sse import EventSourceResponse
 
-# 配置日志
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler()
-    ]
-)
 logger = logging.getLogger(__name__)
 
 os.environ['OPENAI_API_KEY'] = 'sk-9ef6e0e5b0db4da580331750f5de8997'
@@ -52,18 +44,53 @@ class CodeGenerationRequest(BaseModel):
     template: str = None
 
 DEFAULT_TEMPLATE = """
-根据下面的描述来构造测试数据
-{json_data}
-根据下面的json数据的$.schema.apiSchema.responses，检索出以下内容：请求路径、请求参数、请求体、响应体以及响应体中的不同code，帮我生成代码，json数据如下：
+你是一个pytest测试用例生成助手，下面根据以下步骤提取数据并生成满足我要求的代码，回答的内容只需要生成的代码即可。
+# 1. 提取json中需要的数据
+根据下面的json数据检索出以下内容：请求路径、请求参数、请求体、响应体以及响应体中的不同code，json数据如下：
 
 {json_data}
 
-代码规范和示例如下，请严格遵守，并确保覆盖所有的错误码，如果有不能够覆盖的错误码，请在生成完代码后告知我这些错误码以及对应的场景，示例代码中调用的函数默认已被实现，不要有多余的代码：
-API接口：
+# 2. 提取特殊场景数据   
+下面是一些特殊场景需要用到的数据，你需要根据错误码的描述来选择使用这些数据：
+
+## 机器人
+
+| 机器人  | appid                | app_secret                       | 备注                         |
+|---------|----------------------|----------------------------------|------------------------------|
+| 机器人1 | cli_a8ee0c6a92e7501c | 9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT | 可正常使用                   |
+| 机器人2 | cli_a8e0f7e7cbfb1013 | 0TGhLpe3L1wq1OGfnqwTddGH1IOEhxsH | 缺权限                       |
+| 机器人3 | cli_a8e0f325fae5100d | kB0DWoplOTY0lkODgs7ICbPS1VdIYMCY | 开了权限，没有机器人场景能力 |
+
+## 群组
+
+| 序号 | chat_id                             | 机器人   | 备注     |
+|------|-------------------------------------|----------|----------|
+| 1    | oc_a9bc91faf86be9ea96d20e16e12fd57e | 机器人1  |          |
+| 2    | oc_785e4cabaf98a1537830b0cac6ba77d2 | 机器人1  | 已解散   |
+| 3    | oc_47f21b6a03a39c0621ac2db348ea9d6f | 无机器人 |          |
+| 4    | oc_abe9e0db40013cacf88b182af22570c5 | 无机器人 | 已解散   |
+
+## 正常人员
+
+| open_id                             | user_id  | union_id                            | 备注       |
+| ----------------------------------- | -------- | ----------------------------------- | ---------- |
+| ou_adf4e416e22c12c5d4b40e347315f68c | 8684g954 | on_efa8bfbde97c931d0923c0293c192309 | 正常用户   |
+| ou_530eb3559e88330989945fa8114edc88 | b48df8gd | on_3de15936c6e858eda1e9e6615d058144 | 已离职用户 |
+
+# 3. 根据代码示例生成代码
+代码规范和示例如下，请严格遵守以下几点：
+1. 严格按照我给你的代码示例和格式规范
+2. 示例代码中调用的函数默认已被实现，不要自己实现
+3. 代码中不要有没有意义的注释，如"# 发送消息"、"# 断言"、"# 成功时验证返回数据"之类
+4. 函数、类、代码文件等命名根据对应的场景来命名，命名规范同样按照示例代码中命名
+5. 确保所有测试用例的参数都写在yaml文件中，并从yaml文件中读取
+6. 有一部分场景测试用例需要额外代码实现或者参数不方便在yaml文件中书写，比如"消息体超长限制"、"超出调用频率限制"等这类用例，你可以单独写一个函数并通过编码实现这个场景来执行这个测试用例，其余参数仍然用一个函数执行
+7. 尽可能覆盖所有的错误码，如果存在我给你的场景和第6条中都不能够覆盖的错误码，请在生成完代码后告知我这些错误码以及对应的场景
+下面是代码示例：
+## API接口：
 # send_message_api.py
 from api.base_api import APIClient
 import json
-
 
 class SendMessageAPI(APIClient):
     def send_message(self, receive_id, content, receive_id_type, msg_type="text", uuid=None):
@@ -85,16 +112,26 @@ class SendMessageAPI(APIClient):
         "uuid": uuid
     }}
     return self.post(endpoint, data)
-测试用例：
+## 测试用例：
+# test_send_message.py
+import logging
+import pytest
+
+from api.message.send_message_api import SendMessageAPI
+from common.robot_common import get_app_access_token
+from test_data import read_data_from_yaml
+
+logger = logging.getLogger(__name__)
+
+class TestSendMessage:
+
     @pytest.mark.P0
     @pytest.mark.parametrize('send_message_data', read_data_from_yaml(
         "message_case.yaml",
         "send_message"
     ))
     def test_send_message(self, send_message_data):
-        from api.message.send_message_api import SendMessageAPI
-        from common.robot_common import get_app_access_token
-        token=get_app_access_token(send_message_data['app_id'], send_message_data['app_secret'])['app_access_token']
+        token = get_app_access_token(send_message_data['app_id'], send_message_data['app_secret'])['app_access_token']
         \"\"\"测试发送消息API，增加详细日志和错误处理\"\"\"
         message_api = SendMessageAPI(access_token=token)
         receive_id = send_message_data['receive_id']
@@ -105,16 +142,20 @@ class SendMessageAPI(APIClient):
                                             msg_type="text")
         assert resp["code"] == send_message_data["expected_code"], \
             logging.info(f"和预期结果不对应，预期结果：{{send_message_data['expected_code']}}，实际结果：{{resp['code']}}")    
-测试用例参数：
-    send_message:
-        - content: {{"text": ""}}
-          expected_code: 230001
-          receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
-          receive_id_type: "open_id"
-        - content: {{"text": "Hello World2"}}
-          expected_code: 0
-          receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
-          receive_id_type: "open_id"
+## 测试用例参数：
+# message_case.yaml
+send_message:
+    - content: {{"text": "test content"}}
+      expected_code: 0
+      receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
+      receive_id_type: "open_id"
+      desc: "正常情况"
+    - content: {{"text": ""}}
+      expected_code: 230001
+      receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
+      receive_id_type: "open_id"
+      desc: "参数错误"
+    
 """
 
 generation_tasks = {}
@@ -130,7 +171,7 @@ async def fetch_json_data(url: str) -> dict:
         }
         response = requests.get(url, headers=headers)
         response.raise_for_status()
-        return response.json()['data']
+        return response.json()['data']['schema']['apiSchema']['responses']
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"获取数据失败: {str(e)}")
 
@@ -184,7 +225,6 @@ async def generate_code_stream_endpoint(request: CodeGenerationRequest):
         new_url = f"https://open.feishu.cn/document_portal/v1/document/get_detail?fullPath={encoded_path}"
         return new_url
     try:
-        # 获取JSON数据
         if request.url:
             new_request_url = transform_url(request.url)
             json_data = await fetch_json_data(new_request_url)
