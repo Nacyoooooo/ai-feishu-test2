@@ -1,0 +1,61 @@
+robots:
+  - app_id: "cli_a8ee0c6a92e7501c"
+    app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+    tags: {"name":"1"}
+  - app_id: "cli_a8e0f7e7cbfb1013"
+    app_secret: "0TGhLpe3L1wq1OGfnqwTddGH1IOEhxsH"
+    tags: {"name":"2","a":"bcdefg"}
+  - app_id: "cli_a8e0f325fae5100d"
+    app_secret: "kB0DWoplOTY0lkODgs7ICbPS1VdIYMCY"
+    tags: {"name":"3","desc":"未开启机器人能力"}
+  - app_id: "cli_a8e15047e47c900e"
+    app_secret: "nW4zT4mWeHLyYDExLBsHvfxHjBiVGAyp"
+    tags: {"name":"4","1235616":"daffafsaf"}
+
+receivers:
+  - receiver_id: ou_adf4e416e22c12c5d4b40e347315f68c
+    tags: {"状态":"在职"}
+    receiver_id_type: "open_id"
+  - receiver_id: ou_530eb3559e88330989945fa8114edc88
+    tags: {"状态":"离职"}
+    receiver_id_type: "open_id"
+  - receiver_id: oc_a9bc91faf86be9ea96d20e16e12fd57e
+    tags: {"群名":"1"}
+    receiver_id_type: "chat_id"
+send_message:
+  # 测试发送文本消息
+  - content: {"text": "chenzhihao"}
+    msg_type: "text"
+    expected_code: 0
+    robotTags: {"name":"1"}
+    receiverTags: {"状态":"在职"}
+    # 测试参数错误
+  - content: {"text1": "chenzhihao"}
+    msg_type: "text"
+    expected_code: 230001
+    robotTags: {"name":"1"}
+    receiverTags: {"状态":"在职"}
+    # 分享群名片
+  - content: {"chat_id": "oc_a9bc91faf86be9ea96d20e16e12fd57e"}
+    msg_type: "share_chat"
+    expected_code: 0
+    robotTags: {"name":"1"}
+    receiverTags: {"状态":"在职"}
+    # 分享个人名片
+  - content: {"user_id": "ou_c8748ca66d4e17d20a34f12b62a6191d"}
+    msg_type: "share_user"
+    expected_code: 0
+    robotTags: {"name":"1"}
+    receiverTags: {"状态":"在职"}
+    # 分享单聊名片 实际230001
+  - content: {"chat_id": "ou_c8748ca66d4e17d20a34f12b62a6191d"}
+    msg_type: "share_chat"
+    expected_code: 230015
+    robotTags: {"name":"1"}
+    receiverTags: {"状态":"在职"}
+    # 未开启机器人能力
+  - content: {"text": "chenzhihao"}
+    msg_type: "text"
+    expected_code: 230006
+    robotTags: {"desc":"未开启机器人能力"}
+    receiverTags: {"状态":"在职"}
