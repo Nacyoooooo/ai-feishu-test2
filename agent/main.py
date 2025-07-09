@@ -23,7 +23,8 @@ os.environ['LANGCHAIN_API_KEY'] = 'lsv2_pt_d3f0c3c7942845cdb5e8abb560d5acc4_b438
 llm = ChatOpenAI(
     base_url="https://api.deepseek.com/v1",
     model="deepseek-chat",
-    streaming=True  # 启用流式响应
+    streaming=True,
+    temperature=0
 )
 
 app = FastAPI(title="AI代码生成API", description="基于飞书文档生成API代码和测试用例")
@@ -44,7 +45,8 @@ class CodeGenerationRequest(BaseModel):
     template: str = None
 
 DEFAULT_TEMPLATE = """
-你是一个pytest测试用例生成助手，下面根据以下步骤提取数据并生成满足我要求的代码，回答的内容只需要生成的代码即可。
+你是一个pytest测试用例生成助手，下面根据以下步骤提取数据并生成满足我要求的代码，回答的内容只需要生成的代码即可，并使用中文回答。
+
 # 1. 提取json中需要的数据
 根据下面的json数据检索出以下内容：请求路径、请求参数、请求体、响应体以及响应体中的不同code，json数据如下：
 
@@ -77,16 +79,23 @@ DEFAULT_TEMPLATE = """
 | ou_adf4e416e22c12c5d4b40e347315f68c | 8684g954 | on_efa8bfbde97c931d0923c0293c192309 | 正常用户   |
 | ou_530eb3559e88330989945fa8114edc88 | b48df8gd | on_3de15936c6e858eda1e9e6615d058144 | 已离职用户 |
 
-# 3. 根据代码示例生成代码
+# 3. 测试用例生成规则
+请严格按照以下规则生成测试用例：
+1. **仅基于JSON数据中的错误码**：只生成JSON数据中明确存在的错误码对应的测试用例
+2. **使用提供的测试数据**：如果从上述表格中的数据不能满足你生成需要的场景的测试用例，则不生成这个测试用例，并在最后告诉我
+3. **严格按照代码示例格式**：遵循提供的代码结构和命名规范
+
+# 4. 根据代码示例生成代码
 代码规范和示例如下，请严格遵守以下几点：
 1. 严格按照我给你的代码示例和格式规范
 2. 示例代码中调用的函数默认已被实现，不要自己实现
 3. 代码中不要有没有意义的注释，如"# 发送消息"、"# 断言"、"# 成功时验证返回数据"之类
 4. 函数、类、代码文件等命名根据对应的场景来命名，命名规范同样按照示例代码中命名
-5. 确保所有测试用例的参数都写在yaml文件中，并从yaml文件中读取
-6. 有一部分场景测试用例需要额外代码实现或者参数不方便在yaml文件中书写，比如"消息体超长限制"、"超出调用频率限制"等这类用例，你可以单独写一个函数并通过编码实现这个场景来执行这个测试用例，其余参数仍然用一个函数执行
-7. 尽可能覆盖所有的错误码，如果存在我给你的场景和第6条中都不能够覆盖的错误码，请在生成完代码后告知我这些错误码以及对应的场景
-下面是代码示例：
+5. 有一部分场景测试用例需要额外代码实现或者参数不方便在yaml文件中书写，比如"消息体超长限制"、"超出调用频率限制"等这类用例，你可以单独写一个函数并通过编码实现这个场景来执行这个测试用例，其余参数仍然用一个函数执行
+6. 除了第5条中需要单独编写函数来执行的测试用例，其他测试用例的参数都写在yaml文件中，并从yaml文件中读取
+7. 如果存在我给你的场景和第5条中都不能够覆盖的错误码，请在生成完代码后告知我这些错误码以及对应的场景
+
+下面是代码示例，包括三个代码文件，请按照顺序并根据上述要求生成我需要的代码：
 ## API接口：
 # send_message_api.py
 from api.base_api import APIClient
@@ -179,7 +188,7 @@ async def generate_code_stream(json_data: str, template: str = None) -> AsyncGen
     """流式生成代码"""
     if template is None:
         template = DEFAULT_TEMPLATE
-    
+
     prompt = PromptTemplate.from_template(template)
     filled_prompt = prompt.format(json_data=json_data)
     

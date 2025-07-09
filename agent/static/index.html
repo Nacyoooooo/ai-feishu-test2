@@ -196,8 +196,6 @@
     .output {
       padding: 30px;
       min-height: 400px;
-      max-height: 600px;
-      overflow-y: auto;
       line-height: 1.8;
       background: #fff;
     }
@@ -322,16 +320,6 @@
         </div>
 
         <div class="form-group">
-          <label for="jsonData">或直接输入JSON数据:</label>
-          <textarea 
-            id="jsonData" 
-            class="form-control" 
-            v-model="formData.jsonData"
-            placeholder='{"schema": {"apiSchema": {...}}}'
-          ></textarea>
-        </div>
-
-        <div class="form-group">
           <label for="template">自定义模板 (可选):</label>
           <textarea 
             id="template" 
@@ -399,7 +387,6 @@
 
         const formData = reactive({
           url: '',
-          jsonData: '',
           template: ''
         });
 
@@ -472,17 +459,15 @@
 
         async function generateCode() {
           const url = formData.url.trim();
-          const jsonData = formData.jsonData.trim();
           const template = formData.template.trim();
 
-          if (!url && !jsonData) {
-            showStatus('请提供URL或JSON数据', 'error');
+          if (!url) {
+            showStatus('请提供飞书文档URL', 'error');
             return;
           }
 
           const req = { 
-            ...(url && { url }), 
-            ...(jsonData && { json_data: jsonData }), 
+            url,
             ...(template && { template }) 
           };
 
