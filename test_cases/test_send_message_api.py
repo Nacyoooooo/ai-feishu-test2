@@ -69,7 +69,7 @@ class TestSend:
 
     @pytest.mark.P0
     def test_message_too_long(self):
-        """测试发送消息"""
+        """测试发送超长消息"""
         receivers = self.cluster.getReceiver(tags={"状态":"在职"},max=1)
         robots = self.cluster.getRobot(tags={"name":"1"},max=1)
         long_content = {"text": "a" * 150 * 1024}
@@ -83,7 +83,7 @@ class TestSend:
         "rates"
     ))
     def test_message_rate_limit(self,rates):
-        """阈值50次/秒"""
+        """测试发送消息的速率"""
         receivers = self.cluster.getReceiver(tags=rates['receiverTags'],max=1)
         robots = self.cluster.getRobot(tags=rates['robotTags'],max=1)
         content={"text": "测QPS"}
@@ -112,7 +112,7 @@ class TestSend:
         "same"
     ))
     def test_message_same(self,same):
-        """阈值50次/秒"""
+        """测试发送消息的重复"""
         receivers = self.cluster.getReceiver(tags=same['receiverTags'],max=1)
         robots = self.cluster.getRobot(tags=same['robotTags'],max=1)
         content={"text": "查重"}

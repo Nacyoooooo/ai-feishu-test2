@@ -1,41 +1,93 @@
 robots:
   - app_id: "cli_a8ee0c6a92e7501c"
     app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
-    tags: {"name":"1"}
+    tags:
+      name: "1"
+      desc: "全功能"
+      owner: chenzhihao
+
   - app_id: "cli_a8e0f7e7cbfb1013"
     app_secret: "0TGhLpe3L1wq1OGfnqwTddGH1IOEhxsH"
-    tags: {"name":"2","a":"bcdefg"}
+    tags:
+      name: "czh2"
+      desc: "无权限，但有机器人能力"
+      owner: chenzhihao
+
   - app_id: "cli_a8e0f325fae5100d"
     app_secret: "kB0DWoplOTY0lkODgs7ICbPS1VdIYMCY"
-    tags: {"name":"3","desc":"未开启机器人能力"}
+    tags:
+      name: "czh3"
+      desc: "未开启机器人能力"
+      owner: chenzhihao
+
   - app_id: "cli_a8e15047e47c900e"
     app_secret: "nW4zT4mWeHLyYDExLBsHvfxHjBiVGAyp"
-    tags: {"name":"4","1235616":"daffafsaf"}
+    tags:
+      name: "czh4"
+      desc: "无机器人能力，也没有权限"
+      owner: chenzhihao
+
+  - app_id: "cli_a7bbd1060d10500d"
+    app_secret: "L41DXelDb3nlt0Vdx0AmXcqzn16aqoTZ"
+    tags:
+      name: "wky1"
+      desc: "有权限，有机器人能力"
+      owner: wankaiyi
 
 receivers:
   - receiver_id: ou_adf4e416e22c12c5d4b40e347315f68c
-    tags: {"状态":"在职","name":"chenzhihao"}
+    tags:
+      状态: "在职"
+      name: "chenzhihao"
+      性质: 人
+      机器人1: "可见"
     receiver_id_type: "open_id"
+
   - receiver_id: ou_c8748ca66d4e17d20a34f12b62a6191d
-    tags: {"状态":"在职","name":"wankaiyi"}
+    tags:
+      状态: "在职"
+      name: "wankaiyi"
+      性质: 人
+      机器人1: "不可见"
     receiver_id_type: "open_id"
+
   - receiver_id: ou_530eb3559e88330989945fa8114edc88
-    tags: {"状态":"离职","name":"heyunjing"}
+    tags:
+      状态: "离职"
+      name: "heyunjing"
+      性质: 人
     receiver_id_type: "open_id"
+
   - receiver_id: oc_a9bc91faf86be9ea96d20e16e12fd57e
-    tags: {"群名":"1"}
+    tags:
+      性质: 群聊
+      群名: "历史群1"
     receiver_id_type: "chat_id"
+
   - receiver_id: "oc_c9314af7583d16ba886cca1a8644daaf"
-    tags: {"群名":"话题"}
+    tags:
+      性质: 群聊
+      群名: "话题"
     receiver_id_type: "chat_id"
+
   - receiver_id: "ou_a727999dd34a7de8c77ab4f86bf709cb"
-    tags: {"name":"liyongsheng"}
+    tags:
+      状态: "在职"
+      性质: 人
+      name: "liyongsheng"
+      机器人1: "可见"
     receiver_id_type: "open_id"
   - receiver_id: "ou_a727999dd34a7de8c77ab4f86bf709cb"
-    tags: {"name":"houyongliang"}
+    tags:
+      状态: "在职"
+      性质: 人
+      name: "houyongliang"
+      机器人1: "可见"
     receiver_id_type: "open_id"
   - receiver_id: oc_8ef3bb6838aa4aaefe3da8cae0c5fd6c
-    tags: {"群名":"禁言"}
+    tags:
+      性质: 群聊
+      群名: "禁言"
     receiver_id_type: "chat_id"
 send_message:
   # 测试发送文本消息
@@ -101,7 +153,8 @@ group:
 # 群消息流程测试用例数据
 group_message_flow:
   - robot_tags: {"name":"1"}
-    user_tags: {"状态":"在职"}
+    user_tags: 
+      机器人1: "可见"
     test_message: "这是一条来自配置文件的测试消息"
     group_name: "配置驱动测试群"
 
