@@ -20,3 +20,5 @@ def get_app_access_token(app_id, app_secret):
     response = requests.post(url, json=payload, headers=headers)
     
     return response.json()
+
+__all__ = ['get_app_access_token']
