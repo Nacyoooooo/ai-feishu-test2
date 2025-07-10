@@ -7,21 +7,22 @@ class GroupAPI(APIClient):
         self.access_token = access_token
         super().__init__()
 
-    def create_group(self, owner_id, user_id_list, bot_id_list,name="默认群聊"):
+    def create_group(self, owner_id, user_id_list, bot_id_list, set_bot_manager="false"):
         """创建群聊
         Args:
             owner_id: 群主ID
             user_id_list: 用户ID列表
             bot_id_list: 机器人ID列表
+            set_bot_manager: 机器人是否是管理员
         Returns:
             响应结果
         """
-        endpoint = f"/open-apis/im/v1/chats?set_bot_manager=false&user_id_type=open_id"
+        endpoint = f"/open-apis/im/v1/chats?set_bot_manager={set_bot_manager}&user_id_type=open_id"
         data = {
             "owner_id": owner_id,
             "user_id_list": user_id_list,
             "bot_id_list": bot_id_list,
-            "name": name,
+            "name": "默认群聊",
             "chat_mode": "group",
             "chat_type": "private"
         }
