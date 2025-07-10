@@ -17,8 +17,8 @@ def setup_group():
     token = get_app_access_token(app_id, app_secret)['app_access_token']
     group_api = GroupAPI(token)
     create_resp = group_api.create_group(
-        owner_id=open_id,
-        user_id_list=[],
+        owner_id='',
+        user_id_list=[open_id],
         bot_id_list=[],
         set_bot_manager="true"
     )
