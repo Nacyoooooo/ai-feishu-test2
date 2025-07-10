@@ -1,4 +1,6 @@
 import logging
+import threading
+
 import pytest
 
 from api.message.send_message_api import SendMessageAPI
@@ -37,20 +39,34 @@ class TestSendMessage:
             receive_id_type="open_id",
             content=long_content
         )
-        assert resp["code"] == 230025
+        assert resp["code"] == 230025, \
+            logging.info(f"和预期结果不对应，预期结果：230025，实际结果：{resp['code']}")
 
     def test_message_rate_limit(self):
+        """阈值50次/秒"""
         token = get_app_access_token("cli_a8ee0c6a92e7501c", "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT")['app_access_token']
         message_api = SendMessageAPI(access_token=token)
-        for _ in range(100):
+        resp_list = []
+
+        def send_request():
             resp = message_api.send_message(
                 receive_id="ou_adf4e416e22c12c5d4b40e347315f68c",
                 receive_id_type="open_id",
                 content={"text": "test"}
             )
             if resp["code"] == 230020:
-                break
-        assert resp["code"] == 230020
+                resp_list.append(resp)
+
+        threads = []
+        for _ in range(50):
+            t = threading.Thread(target=send_request)
+            t.start()
+            threads.append(t)
+
+        for t in threads:
+            t.join()
+
+        assert any(resp["code"] == 230020 for resp in resp_list)
 
 
 class TestListMessage:
