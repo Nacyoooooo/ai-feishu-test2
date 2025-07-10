@@ -22,8 +22,17 @@ receivers:
   - receiver_id: ou_530eb3559e88330989945fa8114edc88
     tags: {"状态":"离职"}
     receiver_id_type: "open_id"
+  - receiver_id: ou_adf4e416e22c12c5d4b40e347315f68c
+    tags: { "状态": "ID无效" }
+    receiver_id_type: "user_id"
   - receiver_id: oc_a9bc91faf86be9ea96d20e16e12fd57e
     tags: {"群名":"1"}
+    receiver_id_type: "chat_id"
+  - receiver_id: oc_8ef3bb6838aa4aaefe3da8cae0c5fd6c
+    tags: { "群名": "禁言群聊" }
+    receiver_id_type: "chat_id"
+  - receiver_id: oc_b31e149de5615417c398b11004bd1ec9
+    tags: { "群名": "解散群聊" }
     receiver_id_type: "chat_id"
 send_message:
   # 测试发送文本消息
@@ -62,6 +71,92 @@ send_message:
     expected_code: 230006
     robotTags: {"desc":"未开启机器人能力"}
     receiverTags: {"状态":"在职"}
+
+  # 测试文件资源归属权限 (230017)
+  - content: { "file_key": "example_file_key" }
+    msg_type: "file"
+    expected_code: 230017
+    robotTags: { "name": "1" }
+    receiverTags: { "状态": "在职" }
+
+  # 测试群设置限制场景 (230018)
+  - content: { "text": "test content" }
+    msg_type: "text"
+    expected_code: 230018
+    robotTags: { "name": "1" }
+    receiverTags: { "群名": "禁言群聊" }
+
+  # 测试话题操作场景 (230019)
+  - content: { "topic_id": "nonexistent_topic_id" }
+    msg_type: "topic_operation"
+    expected_code: 230019
+    robotTags: { "name": "1" }
+    receiverTags: { "群名": "1" }
+
+  # 测试敏感词过滤机制 (230022)
+  - content: { "text": "法轮功邪教" }
+    msg_type: "text"
+    expected_code: 230022
+    robotTags: { "name": "1" }
+    receiverTags: { "状态": "在职" }
+
+  # 测试消息的数据防泄漏审查未通过 (230028)
+  - content: { "text": "电话号码：15218590470，邮箱地址：2628690042@qq.com" }
+    msg_type: "text"
+    expected_code: 230028
+    robotTags: { "name": "1" }
+    receiverTags: { "状态": "在职" }
+
+  # 测试接收者ID验证 (230034)
+  - content: { "text": "invalid_receiver_test" }
+    msg_type: "text"
+    expected_code: 230034
+    robotTags: { "name": "1" }
+    receiverTags: { "状态": "ID无效" }
+
+  # 测试禁言/屏蔽场景 (230035)
+  - content: { "text": "muted_user_test" }
+    msg_type: "text"
+    expected_code: 230035
+    robotTags: { "name": "1" }
+    receiverTags: { "群名": "禁言群聊" }
+
+  # 测试跨租户单聊限制 (230038)
+  - content: { "user_id": "cross_tenant_user_id" }
+    msg_type: "p2p_chat"
+    expected_code: 230038
+    robotTags: { "name": "1" }
+    receiverTags: { "状态": "在职" }
+
+  # 测试消息发送状态机制 (230049)
+  - content: { "text": "duplicate_message_test" }
+    msg_type: "text"
+    expected_code: 230049
+    robotTags: { "name": "1" }
+    receiverTags: { "状态": "在职" }
+
+  # 测试文件类型验证 (230055)
+  - content:
+      file_key: "file_v3_00o2_2c147224-7863-4184-94e7-f9eeef00037g"  # 需要提供有效的文件key
+      file_type: "MP4"  # 故意使用无效类型
+    msg_type: "file"
+    expected_code: 230055
+    robotTags: { "name": "1" }
+    receiverTags: { "状态": "在职" }
+
+  # 测试卡片生成失败场景 (230099)
+  - content: { "card": "invalid_card_content" }
+    msg_type: "interactive"
+    expected_code: 230099
+    robotTags: { "name": "1" }
+    receiverTags: { "状态": "在职" }
+
+  # 测试群组解散状态 (232009)
+  - content: { "chat_id": "dissolved_chat_id" }
+    msg_type: "group_message"
+    expected_code: 232009
+    robotTags: { "name": "1" }
+    receiverTags: { "群名": "解散群聊" }
   
 group:
   - receiverTags: {"状态":"在职"}

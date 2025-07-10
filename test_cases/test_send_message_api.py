@@ -47,8 +47,9 @@ class TestSend:
         receivers = self.cluster.getReceiver(tags=send_message_data['receiverTags'],max=1)
         robots = self.cluster.getRobot(tags=send_message_data['robotTags'],max=1)
         resp = robots[0].SendMessage(receivers[0],content=send_message_data['content'],msg_type=send_message_data['msg_type'])
+        print("Response structure:", resp)
         assert resp["code"] == send_message_data["expected_code"], \
-            logging.info(f"和预期结果不对应，预期结果：{send_message_data['expected_code']}，实际结果：{resp[0]['code']}")
+            logging.info(f"和预期结果不对应，预期结果：{send_message_data['expected_code']}，实际结果：{resp['code']}")
     
     @pytest.mark.P0
     @pytest.mark.parametrize('group', read_data_from_yaml(
