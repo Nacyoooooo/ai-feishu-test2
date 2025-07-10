@@ -16,6 +16,9 @@ receivers:
   - receiver_id: ou_adf4e416e22c12c5d4b40e347315f68c
     tags: {"状态":"在职"}
     receiver_id_type: "open_id"
+  - receiver_id: ou_c8748ca66d4e17d20a34f12b62a6191d
+    tags: {"状态":"在职"}
+    receiver_id_type: "open_id"
   - receiver_id: ou_530eb3559e88330989945fa8114edc88
     tags: {"状态":"离职"}
     receiver_id_type: "open_id"
@@ -59,3 +62,7 @@ send_message:
     expected_code: 230006
     robotTags: {"desc":"未开启机器人能力"}
     receiverTags: {"状态":"在职"}
+  
+group:
+  - receiverTags: {"状态":"在职"}
+    robotTags: {"name":"1"}

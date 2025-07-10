@@ -1,4 +1,5 @@
 from api.message.send_message_api import SendMessageAPI
+from api.group.group import GroupAPI
 
 # tag是标签
 from .robot_common import get_app_access_token
@@ -12,6 +13,8 @@ class Receiver:
 class Robot:
     def __init__(self, app_id, app_secret,tags:dict[str]={}):
         self.tags=tags
+        self.app_id = app_id
+        self.app_secret = app_secret
         self.access_token = get_app_access_token(app_id, app_secret)['app_access_token']
     
     def SendMessage(self,receiver:Receiver,content:str,msg_type:str):
@@ -19,6 +22,18 @@ class Robot:
         resp = message_api.send_message(receive_id=receiver.receiver_id, receive_id_type=receiver.receiver_id_type,
                                             content=content,
                                             msg_type=msg_type)
+        return resp
+    
+    def CreateGroup(self,robots:list['Robot'],user_ids:list['Receiver'],owner_id:str=None):
+        group_api = GroupAPI(access_token=self.access_token)
+        resp = group_api.create_group(bot_id_list=[robot.app_id for robot in robots],\
+            user_id_list=[user.receiver_id for user in user_ids],\
+                owner_id=owner_id)
+        return resp
+    
+    def delete_group(self,chat_id:str):
+        group_api = GroupAPI(access_token=self.access_token)
+        resp = group_api.delete_group(chat_id=chat_id)
         return resp
 # 集群
 class Cluster:
