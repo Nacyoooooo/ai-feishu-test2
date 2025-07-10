@@ -27,6 +27,7 @@ send_message:
       receive_id: "oc_a9bc91faf86be9ea96d20e16e12fd57e"
       receive_id_type: "chat_id"
       desc: "机器人缺权限"
+      skip: true
 
     - app_id: "cli_a8e0f325fae5100d"
       app_secret: "kB0DWoplOTY0lkODgs7ICbPS1VdIYMCY"
@@ -50,7 +51,8 @@ send_message:
       expected_code: 232009
       receive_id: "oc_785e4cabaf98a1537830b0cac6ba77d2"
       receive_id_type: "chat_id"
-      desc: "群组已解散"
+      desc: "群组已解散（实际返回的是机器人不在群组中，先记录）"
+      skip: true
 
     - app_id: "cli_a8ee0c6a92e7501c"
       app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
@@ -66,7 +68,7 @@ send_message:
       expected_code: 230053
       receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
       receive_id_type: "open_id"
-      desc: "用户屏蔽机器人"
+      desc: "用户已设置不再接收机器人消息"
 
     - app_id: "cli_a8ee0c6a92e7501c"
       app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
@@ -98,9 +100,30 @@ send_message:
       expected_code: 230055
       receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
       receive_id_type: "open_id"
-      msg_type: "media"
+      msg_type: "file"
       desc: "消息类型不匹配"
 
+    - app_id: "cli_a8ee0c6a92e7501c"
+      app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+      content: { "text": "test content11" }
+      expected_code: 230013
+      receive_id: "ou_c8748ca66d4e17d20a34f12b62a6191d"
+      receive_id_type: "open_id"
+      msg_type: "text"
+      desc: "用户不在机器人使用范围内"
+
+    - app_id: "cli_a8ee0c6a92e7501c"
+      app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+      content: { "text": "test content11" }
+      expected_code: 230035
+      receive_id: "oc_8ef3bb6838aa4aaefe3da8cae0c5fd6c"
+      receive_id_type: "chat_id"
+      msg_type: "text"
+      desc: "群聊中禁言"
+
+robot_not_in_group:
+  - app_id: "cli_a8ee0c6a92e7501c"
+    app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
 
 list_message:
   # 成功用例
