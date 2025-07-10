@@ -24,11 +24,11 @@ class Robot:
                                             msg_type=msg_type)
         return resp
     
-    def CreateGroup(self,robots:list['Robot'],user_ids:list['Receiver'],owner_id:str=None):
+    def CreateGroup(self,robots:list['Robot'],user_ids:list['Receiver'],owner_id:str=None,name="默认群聊"):
         group_api = GroupAPI(access_token=self.access_token)
         resp = group_api.create_group(bot_id_list=[robot.app_id for robot in robots],\
             user_id_list=[user.receiver_id for user in user_ids],\
-                owner_id=owner_id)
+                owner_id=owner_id,name=name)
         return resp
     
     def delete_group(self,chat_id:str):

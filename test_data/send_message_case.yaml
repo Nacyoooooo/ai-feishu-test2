@@ -66,3 +66,11 @@ send_message:
 group:
   - receiverTags: {"状态":"在职"}
     robotTags: {"name":"1"}
+
+# 新增节点
+# 群消息流程测试用例数据
+group_message_flow:
+  - robot_tags: {"name":"1"}
+    user_tags: {"状态":"在职"}
+    test_message: "这是一条来自配置文件的测试消息"
+    group_name: "配置驱动测试群"

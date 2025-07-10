@@ -7,7 +7,7 @@ class GroupAPI(APIClient):
         self.access_token = access_token
         super().__init__()
 
-    def create_group(self, owner_id, user_id_list, bot_id_list):
+    def create_group(self, owner_id, user_id_list, bot_id_list,name="默认群聊"):
         """创建群聊
         Args:
             owner_id: 群主ID
@@ -21,7 +21,7 @@ class GroupAPI(APIClient):
             "owner_id": owner_id,
             "user_id_list": user_id_list,
             "bot_id_list": bot_id_list,
-            "name": "默认群聊",
+            "name": name,
             "chat_mode": "group",
             "chat_type": "private"
         }
