@@ -181,3 +181,42 @@ same:
     receiverTags: {"状态":"在职"}
     threads: 50
     expected_code: 230049
+
+send_files:
+  - robotTags: 
+      name: "1"
+    filePath: mp4文件.mp4
+    fileType: mp4
+    expected_code: 0
+
+send_files_to_user:
+  - fileOwnerRobotTags: 
+      owner: "chenzhihao"
+    sendfileRobotTags:
+      owner: "chenzhihao"
+    receiverTags: 
+      机器人1: "可见"
+    file: mp4文件.mp4
+    fileType: mp4
+    expected_code: 0
+    msg_type: "media"
+  - fileOwnerRobotTags: 
+      owner: "chenzhihao"
+    sendfileRobotTags:
+      owner: "chenzhihao"
+    receiverTags: 
+      机器人1: "可见"
+    file: mp4文件.mp4
+    fileType: mp4
+    expected_code: 230055
+    msg_type: "file"
+  - fileOwnerRobotTags: 
+      owner: "wankaiyi"
+    sendfileRobotTags:
+      owner: "chenzhihao"
+    receiverTags: 
+      机器人1: "可见"
+    file: mp4文件.mp4
+    fileType: mp4
+    expected_code: 230017
+    msg_type: "media"

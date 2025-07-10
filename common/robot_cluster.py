@@ -1,6 +1,9 @@
+import os
+
+
 from api.message.send_message_api import SendMessageAPI
 from api.group.group import GroupAPI
-
+from api.file.upload_file_api import UploadFileAPI
 # tag是标签
 from .robot_common import get_app_access_token
 # 单个接收者
@@ -34,6 +37,11 @@ class Robot:
     def delete_group(self,chat_id:str):
         group_api = GroupAPI(access_token=self.access_token)
         resp = group_api.delete_group(chat_id=chat_id)
+        return resp
+    
+    def send_file(self,file_path:str,file_type:str):
+        upload_api = UploadFileAPI(access_token=self.access_token)
+        resp = upload_api.upload_file(file_type=file_type, file_name=file_path, file_path=file_path)
         return resp
 # 集群
 class Cluster:
