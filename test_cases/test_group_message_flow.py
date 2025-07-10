@@ -55,9 +55,9 @@ class TestGroupMessageFlow:
         time.sleep(2)
 
         # 6. 发送群消息
-        group_msg = f"{test_data['test_message']}[群消息]"
+        group_msg ={"text": f"{test_data['test_message']}[群消息]"}
         group_receiver = Receiver(receiver_id=chat_id, receiver_id_type="chat_id")
-        resp = robot.SendMessage(receiver=group_receiver, content={"text": group_msg}, msg_type="text")
+        resp = robot.SendMessage(receiver=group_receiver, content=group_msg, msg_type="text")
         assert resp["code"] == 0, f"发送群消息失败: {resp}"
         logger.info(f"已发送群消息: {group_msg}")
 

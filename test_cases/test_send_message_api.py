@@ -1,5 +1,5 @@
 import logging
-
+import threading
 import pytest
 
 from common.robot_cluster import Cluster, Robot, Receiver
@@ -48,7 +48,7 @@ class TestSend:
         robots = self.cluster.getRobot(tags=send_message_data['robotTags'],max=1)
         resp = robots[0].SendMessage(receivers[0],content=send_message_data['content'],msg_type=send_message_data['msg_type'])
         assert resp["code"] == send_message_data["expected_code"], \
-            logging.info(f"和预期结果不对应，预期结果：{send_message_data['expected_code']}，实际结果：{resp[0]['code']}")
+            f"和预期结果不对应，预期结果：{send_message_data['expected_code']}，实际结果：{resp['code']}"
     
     @pytest.mark.P0
     @pytest.mark.parametrize('group', read_data_from_yaml(
@@ -66,6 +66,45 @@ class TestSend:
         """解散群组"""
         resp2 = robots[0].delete_group(chat_id=chat_id)
         assert resp2['code'] ==0
+
+    @pytest.mark.P0
+    def test_message_too_long(self):
+        """测试发送消息"""
+        receivers = self.cluster.getReceiver(tags={"状态":"在职"},max=1)
+        robots = self.cluster.getRobot(tags={"name":"1"},max=1)
+        long_content = {"text": "a" * 150 * 1024}
+        resp = robots[0].SendMessage(receivers[0],content=long_content,msg_type="text")
+        assert resp["code"] == 230025, \
+            f"和预期结果不对应，预期结果：230025，实际结果：{resp['code']}"
+
+    @pytest.mark.P1
+    @pytest.mark.parametrize('rates', read_data_from_yaml(
+        "send_message_case.yaml",
+        "rates"
+    ))
+    def test_message_rate_limit(self,rates):
+        """阈值50次/秒"""
+        receivers = self.cluster.getReceiver(tags=rates['receiverTags'],max=1)
+        robots = self.cluster.getRobot(tags=rates['robotTags'],max=1)
+        content={"text": "测QPS"}
+
+        resp_list = []
+
+        def send_request():
+            resp = robots[0].SendMessage(receivers[0],content=content,msg_type="text")
+            if resp["code"] == rates['expected_code']:
+                resp_list.append(resp)
+
+        threads = []
+        for _ in range(rates['threads']):
+            t = threading.Thread(target=send_request)
+            t.start()
+            threads.append(t)
+
+        for t in threads:
+            t.join()
+
+        assert any(resp["code"] == rates['expected_code'] for resp in resp_list)
 
 
 if __name__ == '__main__':

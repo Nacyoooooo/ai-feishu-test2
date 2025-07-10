@@ -14,16 +14,28 @@ robots:
 
 receivers:
   - receiver_id: ou_adf4e416e22c12c5d4b40e347315f68c
-    tags: {"状态":"在职"}
+    tags: {"状态":"在职","name":"chenzhihao"}
     receiver_id_type: "open_id"
   - receiver_id: ou_c8748ca66d4e17d20a34f12b62a6191d
-    tags: {"状态":"在职"}
+    tags: {"状态":"在职","name":"wankaiyi"}
     receiver_id_type: "open_id"
   - receiver_id: ou_530eb3559e88330989945fa8114edc88
-    tags: {"状态":"离职"}
+    tags: {"状态":"离职","name":"heyunjing"}
     receiver_id_type: "open_id"
   - receiver_id: oc_a9bc91faf86be9ea96d20e16e12fd57e
     tags: {"群名":"1"}
+    receiver_id_type: "chat_id"
+  - receiver_id: "oc_c9314af7583d16ba886cca1a8644daaf"
+    tags: {"群名":"话题"}
+    receiver_id_type: "chat_id"
+  - receiver_id: "ou_a727999dd34a7de8c77ab4f86bf709cb"
+    tags: {"name":"liyongsheng"}
+    receiver_id_type: "open_id"
+  - receiver_id: "ou_a727999dd34a7de8c77ab4f86bf709cb"
+    tags: {"name":"houyongliang"}
+    receiver_id_type: "open_id"
+  - receiver_id: oc_8ef3bb6838aa4aaefe3da8cae0c5fd6c
+    tags: {"群名":"禁言"}
     receiver_id_type: "chat_id"
 send_message:
   # 测试发送文本消息
@@ -47,20 +59,38 @@ send_message:
     # 分享个人名片
   - content: {"user_id": "ou_c8748ca66d4e17d20a34f12b62a6191d"}
     msg_type: "share_user"
-    expected_code: 0
+    expected_code: 230013
     robotTags: {"name":"1"}
     receiverTags: {"状态":"在职"}
     # 分享单聊名片 实际230001
-  - content: {"chat_id": "ou_c8748ca66d4e17d20a34f12b62a6191d"}
+  - content: {"chat_id": "ou_a727999dd34a7de8c77ab4f86bf709cb"}
     msg_type: "share_chat"
     expected_code: 230015
     robotTags: {"name":"1"}
     receiverTags: {"状态":"在职"}
-    # 未开启机器人能力
+    # 未开启机器人能力 99992361
   - content: {"text": "chenzhihao"}
     msg_type: "text"
     expected_code: 230006
     robotTags: {"desc":"未开启机器人能力"}
+    receiverTags: {"状态":"在职"}
+     # 测试文件归属权限
+  - content: {"file_key": "file_v3_00o2_75f51750-7c0c-4d31-baf8-54b1e9f8899g"}
+    msg_type: "media"
+    expected_code: 230017
+    robotTags: {"name":"1"}
+    receiverTags: {"状态":"在职"}
+    # 在禁言群发言 实际230035
+  - content: {"text": "chenzhihao"}
+    msg_type: "text"
+    expected_code: 230018
+    robotTags: {"name":"1"}
+    receiverTags: {"群名":"禁言"}
+    # 文件上传时选择的类型与发送的消息类型不匹配。
+  - content: {"file_key": "file_v3_00o2_2c147224-7863-4184-94e7-f9eeef00037g"}
+    msg_type: "file"
+    expected_code: 230055
+    robotTags: {"name":"1"}
     receiverTags: {"状态":"在职"}
   
 group:
@@ -74,3 +104,21 @@ group_message_flow:
     user_tags: {"状态":"在职"}
     test_message: "这是一条来自配置文件的测试消息"
     group_name: "配置驱动测试群"
+
+rates:
+  - robotTags: {"name":"1"}
+    receiverTags: {"状态":"在职"}
+    threads: 4
+    expected_code: 0
+  - robotTags: {"name":"1"}
+    receiverTags: {"状态":"在职"}
+    threads: 5
+    expected_code: 0
+  - robotTags: {"name":"1"}
+    receiverTags: {"状态":"在职"}
+    threads: 6
+    expected_code: 230020
+  - robotTags: {"name":"1"}
+    receiverTags: {"状态":"在职"}
+    threads: 50
+    expected_code: 230020
