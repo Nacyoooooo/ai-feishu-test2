@@ -1,7 +1,7 @@
 import logging
 import threading
 import pytest
-
+import uuid
 from common.robot_cluster import Cluster, Robot, Receiver
 # from api.message.send_message_api import SendMessageAPI
 from test_data import read_data_from_yaml
@@ -105,6 +105,34 @@ class TestSend:
             t.join()
 
         assert any(resp["code"] == rates['expected_code'] for resp in resp_list)
+
+    @pytest.mark.P1
+    @pytest.mark.parametrize('same', read_data_from_yaml(
+        "send_message_case.yaml",
+        "same"
+    ))
+    def test_message_same(self,same):
+        """阈值50次/秒"""
+        receivers = self.cluster.getReceiver(tags=same['receiverTags'],max=1)
+        robots = self.cluster.getRobot(tags=same['robotTags'],max=1)
+        content={"text": "查重"}
+        uuid_with_hyphens = str(uuid.uuid4())
+        resp_list = []
+
+        def send_request():
+            resp = robots[0].SendMessage(receivers[0],content=content,msg_type="text",uuid=uuid_with_hyphens)
+            resp_list.append(resp)
+
+        threads = []
+        for _ in range(same['threads']):
+            t = threading.Thread(target=send_request)
+            t.start()
+            threads.append(t)
+
+        for t in threads:
+            t.join()
+
+        assert any(resp["code"] == same['expected_code'] for resp in resp_list)
 
 
 if __name__ == '__main__':

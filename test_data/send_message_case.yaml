@@ -122,3 +122,9 @@ rates:
     receiverTags: {"状态":"在职"}
     threads: 50
     expected_code: 230020
+
+same:
+  - robotTags: {"name":"1"}
+    receiverTags: {"状态":"在职"}
+    threads: 50
+    expected_code: 230049

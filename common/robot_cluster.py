@@ -17,11 +17,11 @@ class Robot:
         self.app_secret = app_secret
         self.access_token = get_app_access_token(app_id, app_secret)['app_access_token']
     
-    def SendMessage(self,receiver:Receiver,content:str,msg_type:str):
+    def SendMessage(self,receiver:Receiver,content:str,msg_type:str,uuid:str=None):
         message_api = SendMessageAPI(access_token=self.access_token)
         resp = message_api.send_message(receive_id=receiver.receiver_id, receive_id_type=receiver.receiver_id_type,
                                             content=content,
-                                            msg_type=msg_type)
+                                            msg_type=msg_type,uuid=uuid)
         return resp
     
     def CreateGroup(self,robots:list['Robot'],user_ids:list['Receiver'],owner_id:str=None,name="默认群聊"):
