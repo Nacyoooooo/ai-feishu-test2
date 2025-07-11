@@ -4,13 +4,8 @@ import pytest
 from common.robot_cluster import Cluster, Robot, Receiver
 from test_data import read_data_from_yaml
 from api.message.list_message_api import ListMessageAPI
+from . import logger
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[logging.StreamHandler()]
-)
-logger = logging.getLogger(__name__)
 
 class TestGroupMessageFlow:
     @classmethod

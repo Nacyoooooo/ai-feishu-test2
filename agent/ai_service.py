@@ -111,7 +111,7 @@ class TestSendMessage:
         "send_message"
     ))
     def test_send_message(self, send_message_data):
-        token = get_app_access_token(send_message_data['app_id'], send_message_data['app_secret'])['app_access_token']
+        token = get_app_access_token(send_message_data['app_id'], send_message_data['app_secret'])
         \"\"\"测试发送消息API，增加详细日志和错误处理\"\"\"
         message_api = SendMessageAPI(access_token=token)
         receive_id = send_message_data['receive_id']

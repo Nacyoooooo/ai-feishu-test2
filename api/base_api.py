@@ -62,4 +62,4 @@ def get_app_access_token(app_id, app_secret):
 if __name__=='__main__':
     from test_data import read_data_from_yaml
     conf=read_data_from_yaml('message_case.yaml', 'robot')
-    print(get_app_access_token(conf['app_id'], conf['app_secret'])['app_access_token'])
+    print(get_app_access_token(conf['app_id'], conf['app_secret']))

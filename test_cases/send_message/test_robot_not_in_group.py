@@ -5,15 +5,7 @@ import pytest
 from api.message.send_message_api import SendMessageAPI
 from common.robot_common import get_app_access_token
 from test_data import read_data_from_yaml
-
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[logging.StreamHandler()]
-)
-logger = logging.getLogger(__name__)
-
-
+from test_cases import logger
 
 @pytest.mark.P0
 @pytest.mark.usefixtures("setup_group")
@@ -22,7 +14,7 @@ logger = logging.getLogger(__name__)
         "robot_not_in_group"
     ))
 def test_robot_not_in_group(setup_group, send_message_data):
-    token = get_app_access_token(send_message_data['app_id'], send_message_data['app_secret'])['app_access_token']
+    token = get_app_access_token(send_message_data['app_id'], send_message_data['app_secret'])
     message_api = SendMessageAPI(access_token=token)
     resp = message_api.send_message(
         receive_id=setup_group,
@@ -31,7 +23,7 @@ def test_robot_not_in_group(setup_group, send_message_data):
         msg_type="text",
     )
     assert resp["code"] == 230002, \
-        logging.info(f"和预期结果不对应，预期结果：230025，实际结果：{resp['code']}")
+        logger.info(f"和预期结果不对应，预期结果：230025，实际结果：{resp['code']}")
 
 # @pytest.fixture
 # def setup_cluster():

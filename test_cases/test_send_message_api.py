@@ -6,12 +6,6 @@ from common.robot_cluster import Cluster, Robot, Receiver
 # from api.message.send_message_api import SendMessageAPI
 from test_data import read_data_from_yaml
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[logging.StreamHandler()]
-)
-logger = logging.getLogger(__name__)
 
 class TestSend:
 

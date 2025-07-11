@@ -18,7 +18,7 @@ class Robot:
         self.tags=tags
         self.app_id = app_id
         self.app_secret = app_secret
-        self.access_token = get_app_access_token(app_id, app_secret)['app_access_token']
+        self.access_token = get_app_access_token(app_id, app_secret)
     
     def SendMessage(self,receiver:Receiver,content:str,msg_type:str,uuid:str=None):
         message_api = SendMessageAPI(access_token=self.access_token)

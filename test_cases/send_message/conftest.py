@@ -1,8 +1,10 @@
-import pytest
 import sys
 from pathlib import Path
 
+import pytest
+
 from api.base_api import get_app_access_token
+from api.employee.employee_api import EmployeeAPI
 from api.group.group import GroupAPI
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
@@ -20,7 +22,7 @@ def before_and_after():
 @pytest.fixture
 def setup_group():
     """测试前置：创建群聊，并返回群聊ID"""
-    token = get_app_access_token(app_id, app_secret)['app_access_token']
+    token = get_app_access_token(app_id, app_secret)
     group_api = GroupAPI(token)
     create_resp = group_api.create_group(
         owner_id='',
@@ -33,3 +35,13 @@ def setup_group():
     yield group_id
 
     group_api.delete_group(chat_id=group_id)
+
+@pytest.fixture
+def create_user():
+    """创建用户"""
+    token = get_app_access_token(app_id, app_secret)
+    employee_api = EmployeeAPI(token)
+    create_employee_resp = employee_api.create_employee(employee_id_type="open_id", name="张三", mobile="13811112222")
+    employee_id = create_employee_resp['data']['employee_id']
+    yield employee_id
+    employee_api.delete_employee("open_id", employee_id)

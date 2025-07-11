@@ -5,13 +5,8 @@ from common.robot_cluster import Cluster, Robot, Receiver
 from test_data import read_data_from_yaml
 from api.group.group import GroupAPI
 from api.message.send_message_api import SendMessageAPI
+from . import logger
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[logging.StreamHandler()]
-)
-logger = logging.getLogger(__name__)
 
 class TestGroupModerationFlow:
     @classmethod
