@@ -38,7 +38,7 @@ class TestSendMessage:
                                         content=send_message_data['content'],
                                         msg_type="text")
         assert resp["code"] == send_message_data["expected_code"], \
-            logger.info(f"和预期结果不对应，场景：{send_message_data['desc']}，预期结果：{send_message_data['expected_code']}，实际结果：{resp['code']}")
+            f"和预期结果不对应，预期结果：{send_message_data['expected_code']}，实际结果：{resp}"
 
     @pytest.mark.P0
     def test_message_too_long(self):

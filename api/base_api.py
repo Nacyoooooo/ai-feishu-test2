@@ -22,9 +22,9 @@ class APIClient:
         """Send GET request"""
         return self._request('GET', endpoint, params=params)
 
-    def post(self, endpoint, json=None):
+    def post(self, endpoint, json=None,files=None):
         """Send POST request"""
-        return self._request('POST', endpoint, json=json)
+        return self._request('POST', endpoint, json=json,files=files)
 
     def put(self, endpoint, json=None):
         """Send PUT request"""
