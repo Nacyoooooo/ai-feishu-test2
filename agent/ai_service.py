@@ -71,7 +71,6 @@ DEFAULT_TEMPLATE = """
 ## API接口：
 # send_message_api.py
 from api.base_api import APIClient
-import json
 
 class SendMessageAPI(APIClient):
     def send_message(self, receive_id, content, receive_id_type, msg_type="text", uuid=None):

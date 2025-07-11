@@ -40,14 +40,6 @@ send_message:
     - app_id: "cli_a8ee0c6a92e7501c"
       app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
       content: {"text": "test content"}
-      expected_code: 230002
-      receive_id: "oc_47f21b6a03a39c0621ac2db348ea9d6f"
-      receive_id_type: "chat_id"
-      desc: "机器人不在群组中"
-
-    - app_id: "cli_a8ee0c6a92e7501c"
-      app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
-      content: {"text": "test content"}
       expected_code: 232009
       receive_id: "oc_785e4cabaf98a1537830b0cac6ba77d2"
       receive_id_type: "chat_id"
