@@ -220,3 +220,16 @@ send_files_to_user:
     fileType: mp4
     expected_code: 230017
     msg_type: "media"
+
+# 群发言权限流程测试用例数据
+group_moderation_flow:
+  - robot_tags: {"name":"1"}
+    user_tags: 
+      机器人1: "可见"
+    test_message: "群发言权限测试消息"
+    group_name: "发言权限测试群"
+  - robot_tags: {"name":"1"}
+    user_tags: 
+      机器人1: "可见"
+    test_message: "指定用户发言权限测试消息"
+    group_name: "指定用户发言权限测试群"
