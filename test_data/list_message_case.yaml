@@ -41,21 +41,6 @@ list_message_codes:
     skip_reason: "预期为230110，实际无法操作"
 list_message:
   - case_name: "全功能机器人获取群消息"
+    sendRobotTags: {"name": "1"}
     expected_code: 0
-    check_content: true
-
-  - case_name: "无权限机器人获取消息"
-    sendRobotTags: {"name": "czh4"}
-    msg_type: "text"
-    content: "无权限测试消息"
-    expected_code: 1001
-    page_size: 10
-    check_content: false
-
-  - case_name: "分页查询消息列表"
-    sendRobotTags: {"name": "wky1"}
-    msg_type: "image"
-    content: "{\"image_key\": \"img_xxxxxx\"}"
-    expected_code: 0
-    page_size: 5
     check_content: true

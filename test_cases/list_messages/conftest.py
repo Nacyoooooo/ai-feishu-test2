@@ -20,7 +20,7 @@ receiversData = read_data_from_yaml(
     )
 
 @pytest.fixture
-def groupReceiver():
+def groupReceiverAuto():
     """测试前置：创建群聊，并返回群聊实体"""
     robot = Robot(app_id=robotsData[0]['app_id'], app_secret=robotsData[0]['app_secret'], tags=robotsData[0]['tags'])
     receiver = Receiver(receiver_id=receiversData[0]['receiver_id'], tags=receiversData[0]['tags'],receiver_id_type=receiversData[0]['receiver_id_type'])

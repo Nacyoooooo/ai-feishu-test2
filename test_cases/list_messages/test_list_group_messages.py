@@ -38,7 +38,7 @@ def test_list_messages_codes(groupReceiver:Receiver,cluster:Cluster, test_data:d
     "list_message_case.yaml",
     "list_message"
 ))
-def test_list_messages2(groupReceiver:Receiver,cluster:Cluster, test_data:dict[str,Any]):
+def test_list_messages2(groupReceiverAuto:Receiver,cluster:Cluster, test_data:dict[str,Any]):
     """测试读取群组消息列表功能"""
     # 获取群聊ID
     
@@ -47,13 +47,13 @@ def test_list_messages2(groupReceiver:Receiver,cluster:Cluster, test_data:dict[s
     
     send_msg_api = SendMessageAPI(send_robot.access_token)
     # 生成UUID列表并存储
-    uuid_messages = [str(uuid.uuid4()) for _ in range(test_data['msgCount'])]
+    uuid_messages = [str(uuid.uuid4()) for _ in range(test_data.get('msgCount',5))]
     
     # 遍历UUID列表发送消息
     for content in uuid_messages:
         send_resp = send_msg_api.send_message(
-            receive_id=groupReceiver.receiver_id, 
-            receive_id_type=groupReceiver.receiver_id_type,
+            receive_id=groupReceiverAuto.receiver_id, 
+            receive_id_type=groupReceiverAuto.receiver_id_type,
             content={"text":content},
             msg_type='text',
         )
@@ -67,7 +67,7 @@ def test_list_messages2(groupReceiver:Receiver,cluster:Cluster, test_data:dict[s
     
     # 读取群组消息
     list_resp = list_msg_api.list_messages(
-        container_id=groupReceiver.receiver_id,
+        container_id=groupReceiverAuto.receiver_id,
         container_id_type='chat',
         page_size=test_data.get('page_size', 20), page_token=None
     )
