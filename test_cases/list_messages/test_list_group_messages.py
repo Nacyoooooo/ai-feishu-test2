@@ -16,13 +16,14 @@ from api.message.send_message_api import SendMessageAPI
     "list_message_codes"
 ),
 )
-def test_list_messages_codes(groupReceiver:Receiver,cluster:Cluster, test_data:dict[str,Any]):
+@pytest.mark.usefixtures("robot_cluster")
+def test_list_messages_codes(groupReceiver:Receiver,robot_cluster:Cluster, test_data:dict[str,Any]):
     """覆盖错误码"""
     if test_data.get('skip', False):
         pytest.skip(f"跳过测试: {test_data['case_name']}\n原因:{test_data.get('skip_reason','')}")
     
     # 初始化列表消息API
-    send_robot = cluster.getRobot(tags=test_data['sendRobotTags'], max=1)[0]
+    send_robot = robot_cluster.getRobot(tags=test_data['sendRobotTags'], max=1)[0]
     list_msg_api = ListMessageAPI(send_robot.access_token)
     # 读取群组消息
     list_resp = list_msg_api.list_messages(
@@ -38,12 +39,13 @@ def test_list_messages_codes(groupReceiver:Receiver,cluster:Cluster, test_data:d
     "list_message_case.yaml",
     "list_message"
 ))
-def test_list_messages2(groupReceiverAuto:Receiver,cluster:Cluster, test_data:dict[str,Any]):
+@pytest.mark.usefixtures("robot_cluster")
+def test_list_messages2(groupReceiverAuto:Receiver,robot_cluster:Cluster, test_data:dict[str,Any]):
     """测试读取群组消息列表功能"""
     # 获取群聊ID
     
     # 获取发送消息的机器人
-    send_robot = cluster.getRobot(tags=test_data['sendRobotTags'], max=1)[0]
+    send_robot = robot_cluster.getRobot(tags=test_data['sendRobotTags'], max=1)[0]
     
     send_msg_api = SendMessageAPI(send_robot.access_token)
     # 生成UUID列表并存储

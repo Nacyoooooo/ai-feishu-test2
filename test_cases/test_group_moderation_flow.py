@@ -15,12 +15,13 @@ from . import logger
     "send_message_case.yaml",
     "group_moderation_flow"
 ))
-def test_group_moderation_message_flow(cluster:Cluster, test_data):
+@pytest.mark.usefixtures("robot_cluster")
+def test_group_moderation_message_flow(robot_cluster:Cluster, test_data):
     """测试群发言权限管理场景：创建群聊 -> 设置发言权限 -> 测试不同用户发言权限"""
     
     # 1. 选择正常的机器人和用户
-    robot = cluster.getRobot(tags=test_data['robot_tags'], max=1)[0]
-    users = cluster.getReceiver(tags=test_data['user_tags'], max=4)  # 获取4个用户
+    robot = robot_cluster.getRobot(tags=test_data['robot_tags'], max=1)[0]
+    users = robot_cluster.getReceiver(tags=test_data['user_tags'], max=4)  # 获取4个用户
     assert len(users) >= 3, "至少需要3个用户才能测试发言权限"
 
     # 2. 记录用户ID列表
