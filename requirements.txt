@@ -1,4 +1,7 @@
 pytest
+pytest-xdist
+pytest-html
+pytest-cov
 requests
 python-dotenv
 pyyaml
@@ -15,4 +18,3 @@ fastapi
 uvicorn
 sse-starlette
 pydantic
-pytest-html
