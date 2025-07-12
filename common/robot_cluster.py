@@ -49,7 +49,7 @@ class Cluster:
         self.robots = robots
         self.receivers =receivers
     
-    def getRobot(self,tags:dict[str],max:int=1):
+    def getRobot(self,tags:dict[str],max:int=1)->list[Robot]:
         matching_robots = [
             robot for robot in self.robots
             if all(robot.tags.get(k) == v for k, v in tags.items())

@@ -1,0 +1,61 @@
+list_message_codes:
+  - case_name: "正常情况"
+    sendRobotTags: {"name": "1"}
+    expected_code: 0
+  - case_name: "container_id_type不写chat"
+    sendRobotTags: {"name": "1"}
+    expected_code: 230001
+    container_id_type: "p2p"
+  - case_name: "container_id不写合法的"
+    sendRobotTags: {"name": "1"}
+    expected_code: 230001
+    container_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
+  - case_name: "container_id写-1"
+    sendRobotTags: {"name": "1"}
+    expected_code: 230001
+    container_id: "-1"
+    skip: true
+    skip_reason: "预期为230001，实际结果是230002"
+  - case_name: "机器人不在群里"
+    sendRobotTags: {"name": "wky1"}
+    expected_code: 230002
+  - case_name: "机器人未启用机器人能力"
+    sendRobotTags: {"name": "czh3"}
+    expected_code: 230006
+    skip: true
+    skip_reason: "预期为230006，实际结果是230002"
+  - case_name: "机器人无权限"
+    sendRobotTags: {"name": "czh2"}
+    expected_code: 230027
+    skip: true
+    skip_reason: "预期为230027，实际结果是99991672"
+  - case_name: "机器人无权限"
+    sendRobotTags: {"name": "czh1"}
+    expected_code: 230073
+    skip: true
+    skip_reason: "预期为230073，实际无法操作"
+  - case_name: "机器人无权限"
+    sendRobotTags: {"name": "czh1"}
+    expected_code: 230110
+    skip: true
+    skip_reason: "预期为230110，实际无法操作"
+list_message:
+  - case_name: "全功能机器人获取群消息"
+    expected_code: 0
+    check_content: true
+
+  - case_name: "无权限机器人获取消息"
+    sendRobotTags: {"name": "czh4"}
+    msg_type: "text"
+    content: "无权限测试消息"
+    expected_code: 1001
+    page_size: 10
+    check_content: false
+
+  - case_name: "分页查询消息列表"
+    sendRobotTags: {"name": "wky1"}
+    msg_type: "image"
+    content: "{\"image_key\": \"img_xxxxxx\"}"
+    expected_code: 0
+    page_size: 5
+    check_content: true

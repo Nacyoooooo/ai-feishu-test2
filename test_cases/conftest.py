@@ -25,7 +25,7 @@ def before_and_after():
 def setup_group():
     """测试前置：创建群聊，并返回群聊ID"""
     token = get_app_access_token(app_id, app_secret)
-    group_api = GroupAPI(token['tenant_access_token'])
+    group_api = GroupAPI(token)
     create_resp = group_api.create_group(
         owner_id=open_id,
         user_id_list=[open_id],

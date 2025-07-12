@@ -6,7 +6,7 @@ class ListMessageAPI(APIClient):
     def __init__(self, access_token):
         self.access_token = access_token
         super().__init__()
-    def list_messages(self, container_id_type, container_id, start_time=None, end_time=None, 
+    def list_messages(self,  container_id,container_id_type='chat', start_time=None, end_time=None, 
                      sort_type="ByCreateTimeAsc", page_size=20, page_token=None):
         """获取会话历史消息
         
