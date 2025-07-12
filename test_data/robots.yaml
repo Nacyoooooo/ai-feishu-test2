@@ -2,7 +2,7 @@ robots:
   - app_id: "cli_a8ee0c6a92e7501c"
     app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
     tags:
-      name: "czh1"
+      name: "1"
       desc: "全功能"
       owner: chenzhihao
 
@@ -40,6 +40,7 @@ receivers:
       状态: "在职"
       name: "chenzhihao"
       性质: 人
+      机器人1: "可见"
     receiver_id_type: "open_id"
 
   - receiver_id: ou_c8748ca66d4e17d20a34f12b62a6191d
@@ -47,6 +48,7 @@ receivers:
       状态: "在职"
       name: "wankaiyi"
       性质: 人
+      机器人1: "不可见"
     receiver_id_type: "open_id"
 
   - receiver_id: ou_530eb3559e88330989945fa8114edc88
@@ -73,15 +75,17 @@ receivers:
       状态: "在职"
       性质: 人
       name: "liyongsheng"
+      机器人1: "可见"
     receiver_id_type: "open_id"
   - receiver_id: "ou_a727999dd34a7de8c77ab4f86bf709cb"
     tags:
       状态: "在职"
       性质: 人
       name: "houyongliang"
+      机器人1: "可见"
     receiver_id_type: "open_id"
   - receiver_id: oc_8ef3bb6838aa4aaefe3da8cae0c5fd6c
     tags:
       性质: 群聊
-      群名: "禁言群"
+      群名: "禁言"
     receiver_id_type: "chat_id"

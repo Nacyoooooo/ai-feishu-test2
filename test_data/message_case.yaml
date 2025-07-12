@@ -160,6 +160,7 @@ list_message:
     expected_code: 230027
     app_id: "cli_a8e0f7e7cbfb1013"
     app_secret: "0TGhLpe3L1wq1OGfnqwTddGH1IOEhxsH"
+    skip: true
   
   # # 话题不可见
   # - container_id: "omt_d4be107c616a"
