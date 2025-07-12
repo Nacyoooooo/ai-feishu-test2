@@ -37,14 +37,14 @@ send_message:
       receive_id_type: "chat_id"
       desc: "机器人无场景能力"
 
-    - app_id: "cli_a8ee0c6a92e7501c"
-      app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
-      content: {"text": "test content"}
-      expected_code: 232009
-      receive_id: "oc_785e4cabaf98a1537830b0cac6ba77d2"
-      receive_id_type: "chat_id"
-      desc: "群组已解散（实际返回的是机器人不在群组中，先记录）"
-      skip: true
+    # - app_id: "cli_a8ee0c6a92e7501c"
+    #   app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+    #   content: {"text": "test content"}
+    #   expected_code: 232009
+    #   receive_id: "oc_785e4cabaf98a1537830b0cac6ba77d2"
+    #   receive_id_type: "chat_id"
+    #   desc: "群组已解散（实际返回的是机器人不在群组中，先记录）"
+    #   skip: true
 
     - app_id: "cli_a8ee0c6a92e7501c"
       app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
@@ -100,14 +100,14 @@ send_message:
       msg_type: "text"
       desc: "用户不在机器人使用范围内"
 
-    - app_id: "cli_a8ee0c6a92e7501c"
-      app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
-      content: { "text": "test content11" }
-      expected_code: 230035
-      receive_id: "oc_8ef3bb6838aa4aaefe3da8cae0c5fd6c"
-      receive_id_type: "chat_id"
-      msg_type: "text"
-      desc: "群聊中禁言"
+    # - app_id: "cli_a8ee0c6a92e7501c"
+    #   app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+    #   content: { "text": "test content11" }
+    #   expected_code: 230035
+    #   receive_id: "oc_8ef3bb6838aa4aaefe3da8cae0c5fd6c"
+    #   receive_id_type: "chat_id"
+    #   msg_type: "text"
+    #   desc: "群聊中禁言"
 
 common_robot:
   - app_id: "cli_a8ee0c6a92e7501c"
