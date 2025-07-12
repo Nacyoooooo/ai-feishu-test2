@@ -11,7 +11,7 @@ from test_cases import logger
 @pytest.mark.usefixtures("setup_group")
 @pytest.mark.parametrize('send_message_data', read_data_from_yaml(
         "message_case.yaml",
-        "robot_not_in_group"
+        "common_robot"
     ))
 def test_robot_not_in_group(setup_group, send_message_data):
     token = get_app_access_token(send_message_data['app_id'], send_message_data['app_secret'])
@@ -23,7 +23,7 @@ def test_robot_not_in_group(setup_group, send_message_data):
         msg_type="text",
     )
     assert resp["code"] == 230002, \
-        logger.info(f"和预期结果不对应，预期结果：230025，实际结果：{resp['code']}")
+        logger.info(f"和预期结果不对应，预期结果：230002，实际结果：{resp['code']}")
 
 # @pytest.fixture
 # def setup_cluster():

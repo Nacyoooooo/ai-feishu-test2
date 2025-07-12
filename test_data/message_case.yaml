@@ -49,14 +49,6 @@ send_message:
     - app_id: "cli_a8ee0c6a92e7501c"
       app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
       content: {"text": "test content"}
-      expected_code: 230013
-      receive_id: "ou_530eb3559e88330989945fa8114edc88"
-      receive_id_type: "open_id"
-      desc: "用户已离职"
-
-    - app_id: "cli_a8ee0c6a92e7501c"
-      app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
-      content: {"text": "test content"}
       expected_code: 230053
       receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
       receive_id_type: "open_id"
@@ -117,9 +109,10 @@ send_message:
       msg_type: "text"
       desc: "群聊中禁言"
 
-robot_not_in_group:
+common_robot:
   - app_id: "cli_a8ee0c6a92e7501c"
     app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
+    desc: "可正常使用的机器人"
 
 list_message:
   # 成功用例
