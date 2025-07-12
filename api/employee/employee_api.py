@@ -15,7 +15,7 @@ class EmployeeAPI(APIClient):
         Returns:
             响应结果
         """
-        endpoint = f"/directory/v1/employees?employee_id_type={employee_id_type}"
+        endpoint = f"/open-apis/directory/v1/employees?employee_id_type={employee_id_type}"
         data = {
             "employee": {
                 "name": {
@@ -34,5 +34,5 @@ class EmployeeAPI(APIClient):
             employee_id_type: 用户 ID 类型
             employee_id: 用户 ID
         """
-        endpoint = f"/directory/v1/employees/{employee_id}?employee_id_type={employee_id_type}"
+        endpoint = f"/open-apis/directory/v1/employees/{employee_id}?employee_id_type={employee_id_type}"
         return self.delete(endpoint)
