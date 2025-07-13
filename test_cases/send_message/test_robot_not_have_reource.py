@@ -22,15 +22,15 @@ from test_data import read_data_from_yaml, get_test_file_path
     "send_message_case.yaml",
     "send_files_to_user"
 ))
-@pytest.mark.usefixtures("cluster")
-def test_complete_group_message_flow(cluster:Cluster, test_data):
+@pytest.mark.usefixtures("robot_cluster")
+def test_complete_group_message_flow(robot_cluster:Cluster, test_data):
     """测试机器人不是资源所有者"""
     # 文件所有者
-    fileOwnerRobot = cluster.getRobot(tags=test_data['fileOwnerRobotTags'], max=1)[0]
+    fileOwnerRobot = robot_cluster.getRobot(tags=test_data['fileOwnerRobotTags'], max=1)[0]
     # 发送人
-    sendfileRobot = cluster.getRobot(tags=test_data['sendfileRobotTags'], max=1)[0]
+    sendfileRobot = robot_cluster.getRobot(tags=test_data['sendfileRobotTags'], max=1)[0]
     # 接收者
-    user = cluster.getReceiver(tags=test_data['receiverTags'], max=1)[0]  # 获取1个用户
+    user = robot_cluster.getReceiver(tags=test_data['receiverTags'], max=1)[0]  # 获取1个用户
 
     file_path = get_test_file_path(test_data['file'])
 

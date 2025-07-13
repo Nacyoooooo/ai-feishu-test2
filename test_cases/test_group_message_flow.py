@@ -12,11 +12,11 @@ from . import logger
     "send_message_case.yaml",
     "group_message_flow"
 ))
-@pytest.mark.usefixtures("cluster")
-def test_complete_group_message_flow(cluster:Cluster, test_data):
+@pytest.mark.usefixtures("robot_cluster")
+def test_complete_group_message_flow(robot_cluster:Cluster, test_data):
     # 1. 选择正常的机器人和用户
-    robot = cluster.getRobot(tags=test_data['robot_tags'], max=1)[0]
-    users = cluster.getReceiver(tags=test_data['user_tags'], max=3)  # 获取3个用户
+    robot = robot_cluster.getRobot(tags=test_data['robot_tags'], max=1)[0]
+    users = robot_cluster.getReceiver(tags=test_data['user_tags'], max=3)  # 获取3个用户
     assert len(users) >= 2, "至少需要2个用户才能创建群组"
 
     # 2. 记录用户ID列表

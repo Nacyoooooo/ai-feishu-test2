@@ -30,9 +30,9 @@ logger = logging.getLogger(__name__)
     "send_message_case.yaml",
     "send_files"
 ))
-@pytest.mark.usefixtures("cluster")
-def test_complete_group_message_flow(cluster:Cluster, test_data):
-    robot = cluster.getRobot(test_data['robotTags'])[0]
+@pytest.mark.usefixtures("robot_cluster")
+def test_complete_group_message_flow(robot_cluster:Cluster, test_data):
+    robot = robot_cluster.getRobot(test_data['robotTags'])[0]
     file_path = get_test_file_path(test_data['filePath'])
     resp = robot.send_file(file_path, test_data['fileType'])
     assert resp['code'] == test_data['expected_code']
