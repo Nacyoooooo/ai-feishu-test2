@@ -84,7 +84,7 @@ class SendMessageAPI(APIClient):
     Returns:
         响应结果
     \"\"\"
-    endpoint = f"/im/v1/messages?receive_id_type={{receive_id_type}}"
+    endpoint = f"/im/v1/messages?receive_id_type={{{{receive_id_type}}}}"
     data = {{
         "content": json.dumps(content),
         "msg_type": msg_type,
@@ -181,7 +181,9 @@ class AIService:
             template = DEFAULT_TEMPLATE
 
         prompt = PromptTemplate.from_template(template)
-        filled_prompt = prompt.format(json_data=json_data)
+        # 转义JSON数据中的花括号以避免模板格式化错误
+        escaped_json = json_data.replace('{', '{{').replace('}', '}}')
+        filled_prompt = prompt.format(json_data=escaped_json, rules_content=rules_content, content_type='application/json')
         
         try:
             async for chunk in self.llm.astream(filled_prompt):
@@ -207,12 +209,13 @@ class AIService:
         """
         if template is None:
             template = DEFAULT_TEMPLATE
+        template = template.replace("{json_data}", json_data)
 
         prompt = PromptTemplate.from_template(template)
-        filled_prompt = prompt.format(json_data=json_data)
+        # filled_prompt = prompt.format(json_data=json_data)
         
         try:
-            response = self.non_streaming_llm.invoke(filled_prompt)
+            response = self.non_streaming_llm.invoke(template)
             return response.content
         except Exception as e:
             logger.error(f"非流式生成代码时发生错误: {str(e)}")
@@ -222,4 +225,54 @@ class AIService:
 ai_service = AIService()
 
 if __name__ == '__main__':
-    print(ai_service.generate_code_non_streaming('', "你好的意大利语是什么"))
+    from urllib.parse import urlparse, urlunparse, quote
+    import json
+    import logging
+    import os
+    import uuid
+    from typing import AsyncGenerator
+
+    import requests
+    from fastapi import FastAPI, HTTPException
+    from fastapi.middleware.cors import CORSMiddleware
+    from fastapi.responses import FileResponse
+    from fastapi.staticfiles import StaticFiles
+    from pydantic import BaseModel
+    from sse_starlette.sse import EventSourceResponse
+    def fetch_json_data(url: str) -> dict:
+        """从URL获取JSON数据"""
+        try:
+            headers = {
+                'Accept': '*/*',
+                'Accept-Language': 'zh-CN,zh',
+                'Cache-Control': 'no-cache',
+                'Connection': 'keep-alive',
+            }
+            response = requests.get(url, headers=headers)
+            response.raise_for_status()
+            return response.json()['data']['schema']['apiSchema']['responses']
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=f"获取数据失败: {str(e)}")
+    def transform_url(original_url):
+        parsed = urlparse(original_url)
+        clean_url = urlunparse((parsed.scheme, parsed.netloc, parsed.path, '', '', ''))
+
+        doc_index = clean_url.find('/document/')
+        if doc_index == -1:
+            raise ValueError("URL中未找到/document/路径")
+
+        path_after_document = clean_url[doc_index + len('/document'):]
+        encoded_path = quote(path_after_document, safe='')
+
+        new_url = f"https://open.feishu.cn/document_portal/v1/document/get_detail?fullPath={encoded_path}"
+        return new_url
+    url='https://open.feishu.cn/document/server-docs/im-v1/message/reply'
+    # 读取rules.md文件内容
+    with open('/root/python_code/ai-feishu-test/agent/rules.md', 'r', encoding='utf-8') as f:
+        new_request_url = transform_url(url)
+        json_data = fetch_json_data(new_request_url)
+        json_str = json.dumps(json_data, ensure_ascii=False)
+        rules_content = f.read()
+        result = ai_service.generate_code_non_streaming(json_str, rules_content)
+        with open('/root/python_code/ai-feishu-test/agent/generated_code.md', 'w', encoding='utf-8') as f:
+            f.write(result)
