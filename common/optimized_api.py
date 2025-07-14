@@ -92,7 +92,7 @@ class ThreadSafeMessageSender:
         self.results = []
     
     def send_messages_concurrently(self, content: Dict[str, Any], 
-                                 count: int, msg_type: str = "text") -> List[Dict[str, Any]]:
+                                 count: int, msg_type: str = "text", uuid: str = None) -> List[Dict[str, Any]]:
         """并发发送消息"""
         import threading
         
@@ -101,7 +101,8 @@ class ThreadSafeMessageSender:
                 resp = self.robot.SendMessage(
                     receiver=self.receiver,
                     content=content,
-                    msg_type=msg_type
+                    msg_type=msg_type,
+                    uuid=uuid,
                 )
                 with self.lock:
                     self.results.append(resp)

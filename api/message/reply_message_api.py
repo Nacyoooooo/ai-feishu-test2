@@ -37,4 +37,9 @@ class ReplyMessageAPI(APIClient):
     def reply_message(self, message_id, **kwargs):
         """回复消息"""
         endpoint = f"/open-apis/im/v1/messages/{message_id}/reply"
-        return self.post(endpoint, json=kwargs)
+        body={
+            "content": json.dumps(kwargs.get('content',{"text":"123"})),
+            "msg_type": kwargs.get('msg_type',"text"),
+            "reply_in_thread": kwargs.get('reply_in_thread',True)
+        }
+        return self.post(endpoint, json=body)

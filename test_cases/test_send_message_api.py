@@ -88,7 +88,7 @@ def test_message_same(robot_cluster:Cluster, same:dict[str,Any], performance_mon
     
     # 使用线程安全的消息发送器
     sender = ThreadSafeMessageSender(robots[0], receivers[0])
-    resp_list = sender.send_messages_concurrently(content, same['threads'], "text")
+    resp_list = sender.send_messages_concurrently(content, same['threads'], "text",uuid_with_hyphens)
 
     assert any(resp["code"] == same['expected_code'] for resp in resp_list)
 

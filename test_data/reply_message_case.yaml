@@ -1,0 +1,72 @@
+reply_message_cases:
+  - params:
+      msg_type: "text"
+      content: {"text": "正常回复消息"}
+    expected_code: 0
+    robotTags: {"desc": "全功能"}
+    receiverTags: {"性质": "人", "机器人1": "可见"}
+    skip: false
+
+  - params:
+      msg_type: "text"
+      content: {"text": "测试机器人不在群中"}
+    expected_code: 230002
+    robotTags: {"name":"wky1"}
+    receiverTags: {"群名": "历史群1"}
+    skip: false
+
+  - params:
+      msg_type: "text"
+      content: {"text": "测试未启用机器人能力"}
+    expected_code: 230006
+    robotTags: {"desc": "未开启机器人能力"}
+    receiverTags: {"性质": "人", "机器人1": "可见"}
+    skip: false
+
+  - params:
+      msg_type: "text"
+      content: {"text": "测试用户不可见机器人"}
+    expected_code: 230013
+    robotTags: {"desc": "全功能"}
+    receiverTags: {"机器人1": "不可见"}
+    skip: false
+
+  - params:
+      msg_type: "text"
+      content: {"text": "测试禁言群发送消息"}
+    expected_code: 230018
+    robotTags: {"desc": "全功能"}
+    receiverTags: {"群名": "禁言"}
+    skip: false
+
+  - params:
+      msg_type: "text"
+      content: {"text": "测试发送敏感信息"}
+    expected_code: 230022
+    robotTags: {"desc": "全功能"}
+    receiverTags: {"性质": "人", "机器人1": "可见"}
+    skip: false
+
+  - params:
+      msg_type: "text"
+      content: {"text": "测试无权发送消息"}
+    expected_code: 230027
+    robotTags: {"desc": "无权限，但有机器人能力"}
+    receiverTags: {"性质": "人", "机器人1": "可见"}
+    skip: false
+
+  - params:
+      msg_type: "text"
+      content: {"text": "测试跨租户单聊"}
+    expected_code: 230038
+    robotTags: {"desc": "全功能"}
+    receiverTags: {"性质": "人", "name": "wankaiyi"}
+    skip: false
+
+  - params:
+      msg_type: "text"
+      content: {"text": "测试消息不可见"}
+    expected_code: 230050
+    robotTags: {"desc": "全功能"}
+    receiverTags: {"状态": "离职"}
+    skip: false

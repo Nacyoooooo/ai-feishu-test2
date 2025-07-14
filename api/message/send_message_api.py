@@ -7,7 +7,7 @@ class SendMessageAPI(APIClient):
         self.access_token = access_token
         super().__init__()
 
-    def send_message(self, receive_id, content, receive_id_type, msg_type, uuid=None):
+    def send_message(self, receive_id, content={"text":"test content"}, receive_id_type="open_id", msg_type="text", uuid=None):
         """发送飞书消息
         Args:
             receive_id: 接收者ID
