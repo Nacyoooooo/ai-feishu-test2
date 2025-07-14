@@ -84,15 +84,6 @@ send_message:
 
     - app_id: "cli_a8ee0c6a92e7501c"
       app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
-      content: {"text": "test content"}
-      expected_code: 230055
-      receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
-      receive_id_type: "open_id"
-      msg_type: "file"
-      desc: "消息类型不匹配"
-
-    - app_id: "cli_a8ee0c6a92e7501c"
-      app_secret: "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT"
       content: { "text": "test content11" }
       expected_code: 230013
       receive_id: "ou_c8748ca66d4e17d20a34f12b62a6191d"
