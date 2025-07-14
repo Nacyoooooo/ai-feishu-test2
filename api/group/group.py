@@ -1,5 +1,4 @@
 from api.base_api import APIClient
-import json
 
 
 class GroupAPI(APIClient):
@@ -14,6 +13,7 @@ class GroupAPI(APIClient):
             user_id_list: 用户ID列表
             bot_id_list: 机器人ID列表
             set_bot_manager: 机器人是否是管理员
+            name: 群聊名称
         Returns:
             响应结果
         """

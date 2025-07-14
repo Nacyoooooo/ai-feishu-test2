@@ -8,7 +8,7 @@ from test_cases import logger
 @pytest.mark.P0
 def test_message_too_long():
     token = get_app_access_token("cli_a8ee0c6a92e7501c", "9kbasiKxCyonOjJ2BCfXHcaKLKPA4fJT")
-    message_api = SendMessageAPI(access_token=token['app_access_token'])
+    message_api = SendMessageAPI(access_token=token)
     long_content = {"text": "a" * 150 * 1024}
     resp = message_api.send_message(
         receive_id="ou_adf4e416e22c12c5d4b40e347315f68c",
