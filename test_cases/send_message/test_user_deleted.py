@@ -22,4 +22,4 @@ def test_user_deleted(create_deleted_user, send_message_data):
         msg_type="text",
     )
     assert resp["code"] == 230013, \
-        logger.info(f"和预期结果不对应，预期结果：230025，实际结果：{resp['code']}")
+        logger.info(f"和预期结果不对应，预期结果：230013，实际结果：{resp['code']}")

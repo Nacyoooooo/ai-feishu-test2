@@ -18,9 +18,11 @@ DEFAULT_TEMPLATE = """
 你是一个pytest测试用例生成助手，下面根据以下步骤提取数据并生成满足我要求的代码，回答的内容只需要生成的代码即可，并使用中文回答。
 
 # 1. 提取json中需要的数据
-根据下面的json数据检索出以下内容：请求路径、请求参数、请求体、响应体以及响应体中的不同code，json数据如下：
-
+根据下面的json数据和curl检索出以下内容：请求路径、请求参数、请求体、响应体以及响应体中的不同code，json数据和curl如下：
+json数据：
 {json_data}
+curl：
+{curl}
 
 # 2. 提取特殊场景数据   
 下面是一些特殊场景需要用到的数据，你需要根据错误码的描述来选择使用这些数据：
@@ -167,11 +169,11 @@ class AIService:
             temperature=self.temperature
         )
     
-    async def generate_code_stream(self, json_data: str, template: str = None) -> AsyncGenerator[str, None]:
+    async def generate_code_stream(self, format_data, template: str = None) -> AsyncGenerator[str, None]:
         """流式生成代码
         
         Args:
-            json_data: JSON数据字符串
+            format_data: 用于填充模板的数据
             template: 提示模板，如果为None则使用默认模板
             
         Yields:
@@ -181,7 +183,7 @@ class AIService:
             template = DEFAULT_TEMPLATE
 
         prompt = PromptTemplate.from_template(template)
-        filled_prompt = prompt.format(json_data=json_data)
+        filled_prompt = prompt.format(json_data=format_data['json_data'], curl=format_data['curl'])
         
         try:
             async for chunk in self.llm.astream(filled_prompt):

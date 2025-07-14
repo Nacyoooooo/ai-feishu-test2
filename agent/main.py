@@ -1,8 +1,6 @@
 import json
 import logging
-import os
 import uuid
-from typing import AsyncGenerator
 
 import requests
 from fastapi import FastAPI, HTTPException
@@ -47,7 +45,7 @@ async def fetch_json_data(url: str) -> dict:
         }
         response = requests.get(url, headers=headers)
         response.raise_for_status()
-        return response.json()['data']['schema']['apiSchema']['responses']
+        return response.json()
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"获取数据失败: {str(e)}")
 
@@ -85,7 +83,6 @@ async def generate_code_endpoint(request: CodeGenerationRequest):
             new_request_url = transform_url(request.url)
             json_data = await fetch_json_data(new_request_url)
             json_str = json.dumps(json_data, ensure_ascii=False)
-            logger.info(f"飞书API文档json数据：{json_str}")
         elif request.json_data:
             json_str = request.json_data
         else:
@@ -133,8 +130,13 @@ async def generate_code_stream_endpoint_get(task_id: str = None):
     
     try:
         logger.info(f"开始为任务 {task_id} 生成流式响应")
+        json_data_dict = json.loads(task['json_data'])
+        format_data = {
+            'json_data': json_data_dict['data']['schema']['apiSchema']['responses'],
+            'curl': json_data_dict['data']['schema']['apiSchema']['requestBody']['content']['application/json']['examples']['curl'],
+        }
         return EventSourceResponse(
-            ai_service.generate_code_stream(task['json_data'], task['template']),
+            ai_service.generate_code_stream(format_data, task['template']),
             media_type="text/event-stream"
         )
     except Exception as e:
