@@ -1,0 +1,409 @@
+# 参数异常测试用例配置
+# 基于飞书API文档生成的参数异常场景测试
+
+# 发送消息API参数异常测试
+send_message_anomalies:
+  # 接收者ID异常
+  - test_name: "test_receive_id_null"
+    description: "接收者ID为null"
+    parameter_name: "receive_id"
+    test_value: null
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_receive_id_empty"
+    description: "接收者ID为空字符串"
+    parameter_name: "receive_id"
+    test_value: ""
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_receive_id_invalid_format"
+    description: "接收者ID格式错误"
+    parameter_name: "receive_id"
+    test_value: "invalid_id_format"
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_receive_id_special_chars"
+    description: "接收者ID包含特殊字符"
+    parameter_name: "receive_id"
+    test_value: "ou_<script>alert('xss')</script>"
+    expected_code: 230001
+    priority: "P1"
+    
+  - test_name: "test_receive_id_very_long"
+    description: "接收者ID超长"
+    parameter_name: "receive_id"
+    test_value: "ou_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    expected_code: 230001
+    priority: "P1"
+    
+  # 接收者ID类型异常
+  - test_name: "test_receive_id_type_null"
+    description: "接收者ID类型为null"
+    parameter_name: "receive_id_type"
+    test_value: null
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_receive_id_type_empty"
+    description: "接收者ID类型为空字符串"
+    parameter_name: "receive_id_type"
+    test_value: ""
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_receive_id_type_invalid"
+    description: "接收者ID类型无效"
+    parameter_name: "receive_id_type"
+    test_value: "invalid_type"
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_receive_id_type_case_sensitive"
+    description: "接收者ID类型大小写敏感"
+    parameter_name: "receive_id_type"
+    test_value: "OPEN_ID"
+    expected_code: 230001
+    priority: "P1"
+    
+  # 消息内容异常
+  - test_name: "test_content_null"
+    description: "消息内容为null"
+    parameter_name: "content"
+    test_value: null
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_content_empty"
+    description: "消息内容为空对象"
+    parameter_name: "content"
+    test_value: {}
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_content_empty_string"
+    description: "消息内容为空字符串"
+    parameter_name: "content"
+    test_value: {"text": ""}
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_content_invalid_format"
+    description: "消息内容格式错误"
+    parameter_name: "content"
+    test_value: {"invalid_key": "test"}
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_content_missing_text"
+    description: "消息内容缺少text字段"
+    parameter_name: "content"
+    test_value: {"other_field": "test"}
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_content_text_null"
+    description: "text字段为null"
+    parameter_name: "content"
+    test_value: {"text": null}
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_content_text_not_string"
+    description: "text字段不是字符串"
+    parameter_name: "content"
+    test_value: {"text": 123}
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_content_text_array"
+    description: "text字段是数组"
+    parameter_name: "content"
+    test_value: {"text": ["test"]}
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_content_text_object"
+    description: "text字段是对象"
+    parameter_name: "content"
+    test_value: {"text": {"nested": "test"}}
+    expected_code: 230001
+    priority: "P0"
+    
+  # 消息类型异常
+  - test_name: "test_msg_type_null"
+    description: "消息类型为null"
+    parameter_name: "msg_type"
+    test_value: null
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_msg_type_empty"
+    description: "消息类型为空字符串"
+    parameter_name: "msg_type"
+    test_value: ""
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_msg_type_invalid"
+    description: "消息类型无效"
+    parameter_name: "msg_type"
+    test_value: "invalid_type"
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_msg_type_case_sensitive"
+    description: "消息类型大小写敏感"
+    parameter_name: "msg_type"
+    test_value: "TEXT"
+    expected_code: 230001
+    priority: "P1"
+    
+  - test_name: "test_msg_type_special_chars"
+    description: "消息类型包含特殊字符"
+    parameter_name: "msg_type"
+    test_value: "text<script>"
+    expected_code: 230001
+    priority: "P1"
+    
+  # UUID异常
+  - test_name: "test_uuid_empty"
+    description: "UUID为空字符串"
+    parameter_name: "uuid"
+    test_value: ""
+    expected_code: 230001
+    priority: "P1"
+    
+  - test_name: "test_uuid_invalid_format"
+    description: "UUID格式错误"
+    parameter_name: "uuid"
+    test_value: "invalid-uuid-format"
+    expected_code: 230001
+    priority: "P1"
+    
+  - test_name: "test_uuid_very_long"
+    description: "UUID超长"
+    parameter_name: "uuid"
+    test_value: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    expected_code: 230001
+    priority: "P1"
+    
+  - test_name: "test_uuid_special_chars"
+    description: "UUID包含特殊字符"
+    parameter_name: "uuid"
+    test_value: "test-uuid<script>alert('xss')</script>"
+    expected_code: 230001
+    priority: "P1"
+
+# 边界值测试
+boundary_value_tests:
+  # 消息长度边界值
+  - test_name: "test_message_length_min"
+    description: "消息长度为最小值(1字符)"
+    parameter_name: "content"
+    test_value: {"text": "a"}
+    expected_code: 0
+    priority: "P1"
+    
+#  - test_name: "test_message_length_max"
+#    description: "消息长度为最大值(150KB)"
+#    parameter_name: "content"
+#    test_value: {"text": "a" * (150 * 1024)}
+#    expected_code: 0
+#    priority: "P1"
+#
+#  - test_name: "test_message_length_exceed"
+#    description: "消息长度超过最大值"
+#    parameter_name: "content"
+#    test_value: {"text": "a" * (150 * 1024 + 1)}
+#    expected_code: 230025
+#    priority: "P0"
+    
+  - test_name: "test_message_length_zero"
+    description: "消息长度为0"
+    parameter_name: "content"
+    test_value: {"text": ""}
+    expected_code: 230001
+    priority: "P0"
+    
+  # 接收者ID长度边界值
+  - test_name: "test_receive_id_length_min"
+    description: "接收者ID长度为最小值"
+    parameter_name: "receive_id"
+    test_value: "ou_a"
+    expected_code: 230001
+    priority: "P1"
+    
+  - test_name: "test_receive_id_length_max"
+    description: "接收者ID长度为最大值"
+    parameter_name: "receive_id"
+    test_value: "ou_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    expected_code: 230001
+    priority: "P1"
+
+# 特殊字符测试
+special_chars_tests:
+  - test_name: "test_content_xss_injection"
+    description: "XSS注入测试"
+    parameter_name: "content"
+    test_value: {"text": "<script>alert('xss')</script>"}
+    expected_code: 0
+    priority: "P1"
+    
+  - test_name: "test_content_sql_injection"
+    description: "SQL注入测试"
+    parameter_name: "content"
+    test_value: {"text": "'; DROP TABLE users; --"}
+    expected_code: 0
+    priority: "P1"
+    
+  - test_name: "test_content_emoji"
+    description: "表情符号测试"
+    parameter_name: "content"
+    test_value: {"text": "🎉🚀💻测试中文特殊字符!@#$%^&*()"}
+    expected_code: 0
+    priority: "P1"
+    
+  - test_name: "test_content_unicode"
+    description: "Unicode字符测试"
+    parameter_name: "content"
+    test_value: {"text": "测试中文\u4e2d\u6587\u6d4b\u8bd5"}
+    expected_code: 0
+    priority: "P1"
+    
+  - test_name: "test_content_html_entities"
+    description: "HTML实体测试"
+    parameter_name: "content"
+    test_value: {"text": "&lt;script&gt;alert('xss')&lt;/script&gt;"}
+    expected_code: 0
+    priority: "P1"
+    
+  - test_name: "test_content_url_encoding"
+    description: "URL编码测试"
+    parameter_name: "content"
+    test_value: {"text": "test%20message%20with%20spaces"}
+    expected_code: 0
+    priority: "P1"
+
+# 数据类型异常测试
+data_type_anomalies:
+  - test_name: "test_receive_id_number"
+    description: "接收者ID为数字"
+    parameter_name: "receive_id"
+    test_value: 12345
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_receive_id_boolean"
+    description: "接收者ID为布尔值"
+    parameter_name: "receive_id"
+    test_value: true
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_receive_id_array"
+    description: "接收者ID为数组"
+    parameter_name: "receive_id"
+    test_value: ["test"]
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_receive_id_object"
+    description: "接收者ID为对象"
+    parameter_name: "receive_id"
+    test_value: {"id": "test"}
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_content_number"
+    description: "消息内容为数字"
+    parameter_name: "content"
+    test_value: 12345
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_content_boolean"
+    description: "消息内容为布尔值"
+    parameter_name: "content"
+    test_value: true
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_content_string"
+    description: "消息内容为字符串"
+    parameter_name: "content"
+    test_value: "test message"
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_msg_type_number"
+    description: "消息类型为数字"
+    parameter_name: "msg_type"
+    test_value: 123
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_msg_type_boolean"
+    description: "消息类型为布尔值"
+    parameter_name: "msg_type"
+    test_value: true
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_msg_type_array"
+    description: "消息类型为数组"
+    parameter_name: "msg_type"
+    test_value: ["text"]
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_msg_type_object"
+    description: "消息类型为对象"
+    parameter_name: "msg_type"
+    test_value: {"type": "text"}
+    expected_code: 230001
+    priority: "P0"
+
+# 组合异常测试
+combination_anomalies:
+  - test_name: "test_multiple_parameters_null"
+    description: "多个参数为null"
+    test_data:
+      receive_id: null
+      receive_id_type: null
+      content: null
+      msg_type: null
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_multiple_parameters_empty"
+    description: "多个参数为空"
+    test_data:
+      receive_id: ""
+      receive_id_type: ""
+      content: {}
+      msg_type: ""
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_multiple_parameters_invalid"
+    description: "多个参数无效"
+    test_data:
+      receive_id: "invalid_id"
+      receive_id_type: "invalid_type"
+      content: {"invalid": "format"}
+      msg_type: "invalid_type"
+    expected_code: 230001
+    priority: "P0"
+    
+  - test_name: "test_content_and_msg_type_mismatch"
+    description: "消息内容与类型不匹配"
+    test_data:
+      receive_id: "ou_adf4e416e22c12c5d4b40e347315f68c"
+      receive_id_type: "open_id"
+      content: {"text": "test"}
+      msg_type: "file"
+    expected_code: 230055
+    priority: "P0" 
