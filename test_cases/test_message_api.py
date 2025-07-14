@@ -18,7 +18,7 @@ class TestSendMessage:
     def test_send_message(self, send_message_data):
         # API内部问题先跳过
         if 'skip' in send_message_data and send_message_data['skip'] is True:
-            return
+            pytest.skip("skip")
         token = get_app_access_token(send_message_data['app_id'], send_message_data['app_secret'])
         """测试发送消息API，增加详细日志和错误处理"""
         message_api = SendMessageAPI(access_token=token)
@@ -42,7 +42,8 @@ class TestSendMessage:
             resp = message_api.send_message(
                 receive_id="ou_adf4e416e22c12c5d4b40e347315f68c",
                 receive_id_type="open_id",
-                content={"text": "test"}
+                content={"text": "test"},
+                msg_type="text",
             )
             if resp["code"] == 230020:
                 resp_list.append(resp)
