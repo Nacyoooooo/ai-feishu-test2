@@ -44,6 +44,7 @@ class TestSendMessage:
                 receive_id_type="open_id",
                 content={"text": "test"},
                 msg_type="text",
+                ignore_limit=True
             )
             if resp["code"] == 230020:
                 resp_list.append(resp)

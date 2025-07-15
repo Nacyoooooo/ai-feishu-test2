@@ -17,4 +17,4 @@ def test_message_too_long():
         msg_type="text",
     )
     assert resp["code"] == 230025, \
-        logger.info(f"和预期结果不对应，预期结果：230025，实际结果：{resp['code']}")
+        f"和预期结果不对应，预期结果：230025，实际结果：{resp['code']}"

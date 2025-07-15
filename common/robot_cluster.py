@@ -24,9 +24,9 @@ class Robot:
         self.app_secret = app_secret
         self.access_token = resource_pool.get_token(app_id, app_secret)
     
-    def SendMessage(self,receiver:Receiver,content:Any,msg_type:str,uuid:Optional[str]=None):
+    def SendMessage(self,receiver:Receiver,content:Any,msg_type:str,uuid:Optional[str]=None,ignore_limit=False):
         message_api = SendMessageAPI(access_token=self.access_token)
-        resp = message_api.send_message(receive_id=receiver.receiver_id, receive_id_type=receiver.receiver_id_type,
+        resp = message_api.send_message(ignore_limit=ignore_limit,receive_id=receiver.receiver_id, receive_id_type=receiver.receiver_id_type,
                                             content=content,
                                             msg_type=msg_type,uuid=uuid)
         return resp

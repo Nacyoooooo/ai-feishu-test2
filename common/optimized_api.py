@@ -99,6 +99,7 @@ class ThreadSafeMessageSender:
         def send_single():
             try:
                 resp = self.robot.SendMessage(
+                    ignore_limit=True,
                     receiver=self.receiver,
                     content=content,
                     msg_type=msg_type,

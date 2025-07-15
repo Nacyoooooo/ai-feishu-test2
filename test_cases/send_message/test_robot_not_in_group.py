@@ -23,7 +23,7 @@ def test_robot_not_in_group(setup_group, send_message_data):
         msg_type="text",
     )
     assert resp["code"] == 230002, \
-        logger.info(f"和预期结果不对应，预期结果：230002，实际结果：{resp['code']}")
+        f"和预期结果不对应，预期结果：230002，实际结果：{resp['code']}"
 
 # @pytest.fixture
 # def setup_cluster():
