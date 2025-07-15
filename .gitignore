@@ -5,7 +5,6 @@ __pycache__/
 *$py.class
 .env
 .env.local
-report.htm
 .pytest_cache/
 .coverage
 htmlcov/
@@ -15,7 +14,8 @@ api.log
 *.swo
 *~
 assets/
-# *.html
+*.htm
+*.html
 *.out
 *.log
 *.logs

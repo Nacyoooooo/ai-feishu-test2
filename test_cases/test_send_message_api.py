@@ -1,10 +1,10 @@
-import logging
-import threading
-from typing import Any
-import pytest
 import uuid
-from common.robot_cluster import Cluster, Robot, Receiver
+from typing import Any
+
+import pytest
+
 from common.optimized_api import ThreadSafeMessageSender
+from common.robot_cluster import Cluster
 from test_data import read_data_from_yaml
 
 
@@ -74,7 +74,7 @@ def test_message_rate_limit(robot_cluster: Cluster, rates: dict[str, Any], perfo
 
     # 使用线程安全的消息发送器
     sender = ThreadSafeMessageSender(robots[0], receivers[0])
-    resp_list = sender.send_messages_concurrently(content, rates['threads'], "text")
+    resp_list = sender.send_messages_concurrently(content, rates['threads'], None, "text")
 
     assert any(resp["code"] == rates['expected_code'] for resp in resp_list)
 

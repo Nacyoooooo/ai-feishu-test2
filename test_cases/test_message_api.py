@@ -70,6 +70,8 @@ class TestListMessage:
         from api.message.list_message_api import ListMessageAPI
         from common.robot_common import get_app_access_token
         """测试获取历史消息API"""
+        if 'skip' in list_message_data and list_message_data['skip'] is True:
+            pytest.skip("skip")
         token = get_app_access_token(list_message_data['app_id'],
                                      list_message_data['app_secret'])
         message_api = ListMessageAPI(access_token=token)
