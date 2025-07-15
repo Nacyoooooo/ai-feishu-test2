@@ -3,12 +3,10 @@ import json
 import requests
 
 from api.base_api import APIClient
-from common.rate_limiter import get_global_rate_limiter
 
 
 class SendMessageAPI(APIClient):
     def __init__(self, access_token):
-        self.rate_limiter = get_global_rate_limiter()
         self.access_token = access_token
         super().__init__()
 
